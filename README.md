@@ -15,4 +15,4 @@
 
 ##### 4.Detecting spam email (R studio)
 
-##### Additionally, a strategic finance report and some company projects during my MBA are provided.
+#### Additionally, a strategic finance report and some company projects during my MBA are provided.
