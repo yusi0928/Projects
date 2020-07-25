@@ -1,4 +1,4 @@
-### Projects
+### Project portfolio
 
 #### Here are some examples about how I use advanced data analytics to solve real life business challenges, including original coding and presentation documents.
 
