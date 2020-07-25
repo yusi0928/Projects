@@ -15,4 +15,6 @@
 
 ##### 4.Detecting spam email (R studio)
 
+##### SQL projects are under request.
+
 #### Additionally, a strategic finance report and some company projects during my MBA are provided.
