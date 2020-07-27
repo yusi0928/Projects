@@ -11,7 +11,7 @@
 ###### - Supervised learning algorithms for a classification problem
 ###### - Marketing & sales strategies based on predictive leads scoring pipeline
 
-##### 3.Data pipe for reducing repetitive buz reporting task in the company (Python)
+##### 3.Data pipe for reducing repetitive business reporting task in the company (Python)
 
 ##### 4.Detecting spam email (R studio)
 
