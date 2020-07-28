@@ -1,6 +1,6 @@
 ### Project portfolio
 
-#### Here are some examples about how I use advanced data analytics to solve real life business challenges, including original coding and presentation documents.
+#### Here are some examples how I use advanced data analytics to solve real life business challenges, including original coding and presentation documents.
 
 ##### 1.Quantifying customer feedback, a case of hotel industry (Python)
 ###### - NLTK sentiment analysis
