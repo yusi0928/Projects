@@ -1,0 +1,26 @@
+SELECT *
+FROM metadata_sampling m
+JOIN review_books b
+ON m.asin = b.asin
+
+UNION ALL
+
+SELECT *
+FROM metadata_sampling m
+JOIN review_electronics e
+ON m.asin = e.asin
+
+
+UNION ALL
+
+SELECT *
+FROM metadata_sampling m
+INNER JOIN review_movies mov
+ON m.asin = mov.asin
+
+UNION ALL
+
+SELECT *
+FROM metadata_clothing mc
+JOIN review_clothing c
+ON mc.asin = c.asin
