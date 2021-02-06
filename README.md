@@ -11,9 +11,14 @@
 ###### - Supervised learning algorithms for a classification problem
 ###### - Marketing & sales strategies based on predictive leads scoring pipeline
 
-##### 3.Data pipe for reducing repetitive business reporting task in the company (Python)
+##### 3. Identifying the most valuable customers through customer segmentation, an Amazon case (Python)
+###### - Unsupervised learning algorithms for a clustering problem
+###### - Answer who are the most valuable customers and opinion leaders in order to improve customer relationship management
+###### - Customer persona analysis
 
-##### 4.Detecting spam email (R studio)
+##### 4.Data pipe for reducing repetitive business reporting task in the company (Python)
+
+##### 5.Detecting spam email (R studio)
 
 ##### SQL projects are upon request.
 
