@@ -35,7 +35,7 @@ flowchart LR
 | Orchestration | Airflow-style task dependency and refresh design | [`orchestration/airflow_dag.py`](orchestration/airflow_dag.py) |
 | Quality and governance | Data quality checks, privacy controls, lineage, operating model | [`docs/data_quality_results.md`](docs/data_quality_results.md), [`docs/privacy_controls.md`](docs/privacy_controls.md), [`docs/data_lineage.md`](docs/data_lineage.md) |
 | Weekly diagnostics | Latest week vs four-week baseline, anomaly ranking, analyst hypotheses | [`analysis/weekly_kpi_diagnostics.csv`](analysis/weekly_kpi_diagnostics.csv), [`reports/weekly_diagnostics_summary.md`](reports/weekly_diagnostics_summary.md) |
-| Final dashboard | Static HTML dashboard with KPI cards, trends, anomaly chart, and analyst queue | [`dashboard/index.html`](dashboard/index.html) |
+| Final dashboard | Static HTML dashboard with KPI cards, trends, anomaly chart, and analyst queue | [Live dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/) and [source HTML](dashboard/index.html) |
 
 ## How To Run
 
@@ -54,7 +54,8 @@ Generated outputs:
 - `analysis/weekly_kpi_diagnostics.csv`
 - `analysis/weekly_kpi_summary.json`
 - `reports/weekly_diagnostics_summary.md`
-- `dashboard/index.html`
+- Live dashboard: https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/
+- Source HTML: `dashboard/index.html`
 
 The SQLite database is generated locally under `build/` and is intentionally not committed.
 
