@@ -1,0 +1,2 @@
+# No third-party packages required for Milestone 1.
+# The project runs with Python standard library + SQLite.

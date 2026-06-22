@@ -1,0 +1,7 @@
+contact_reason_id,contact_reason_name,reason_group,is_ai_safe
+late_delivery,Late delivery,Delivery,1
+missing_item,Missing item,Order accuracy,1
+refund_request,Refund request,Payment and refunds,1
+cancellation,Cancellation,Order lifecycle,1
+payment_issue,Payment issue,Payment and refunds,1
+account_issue,Account issue,Account,1
