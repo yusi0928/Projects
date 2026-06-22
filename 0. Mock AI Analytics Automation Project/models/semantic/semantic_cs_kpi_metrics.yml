@@ -1,0 +1,35 @@
+semantic_model:
+  name: cs_weekly_operations
+  description: Weekly customer support KPI semantic layer at country and contact reason grain.
+  model: mart_weekly_cs_kpi_by_country_reason
+  grain:
+    - week_start
+    - country_code
+    - contact_reason_id
+  owner: CS Operations Analytics
+  refresh_cadence: Weekly on Monday morning after rolling two-week reprocessing
+  ai_usage_policy: AI may use this aggregated mart and metric definitions, but may not access raw contact, customer, agent, or free-text data.
+
+metrics:
+  - name: contact_volume
+    definition: Number of contacts created in the week.
+    ai_safe: true
+  - name: avg_aht_minutes
+    definition: Average handling time in minutes for resolved contacts.
+    ai_safe: true
+  - name: fcr_rate
+    definition: Resolved contacts not reopened within the observation window divided by resolved contacts.
+    ai_safe: true
+  - name: avg_csat
+    definition: Average submitted CSAT score linked to contacts.
+    ai_safe: true
+  - name: backlog_end_of_week
+    definition: Contacts created in the week that remain open at week end.
+    ai_safe: true
+  - name: compensation_cost
+    definition: Refund, voucher, and goodwill amount linked to contacts.
+    ai_safe: true
+  - name: cancellation_rate
+    definition: Cancelled orders divided by total orders at country-week level.
+    caveat: Repeated across contact reasons for the same country-week.
+    ai_safe: true
