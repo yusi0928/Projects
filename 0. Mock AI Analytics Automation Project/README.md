@@ -1,41 +1,75 @@
-# AI Analytics: AI-Ready CS Operations Analytics Stack
+# AI Analytics: Synthetic CS Operations Automation Stack
 
-This repository is a self-initiated synthetic/mock portfolio project that simulates a marketplace customer support analytics stack. It demonstrates how an analyst can move from trusted data foundations to governed KPI reporting, weekly diagnostics, reproducible HTML dashboards, and AI-assisted business review preparation. No real customer, employee, financial, employer, or proprietary company data is used.
+This is a self-initiated synthetic/mock portfolio project that demonstrates end-to-end analytics automation for a marketplace customer support use case. It starts with raw synthetic operational data and ends with governed KPI reporting, analyst diagnostics, and KPI trust documentation.
 
-The current project includes two milestones:
-
-```text
-synthetic raw operational data
--> staging models
--> intermediate business logic
--> governed weekly KPI mart
--> semantic metric definitions
--> quality checks, orchestration design, privacy controls
--> multiple HTML consumption pages
-```
-
-One governed semantic KPI layer supports multiple consumption channels: automated HTML reporting, KPI governance documentation, weekly diagnostics, and future BI implementation.
+No real customer, employee, financial, employer, or proprietary company data is used.
 
 ## Business Context
 
-Customer Support leadership needs a weekly business review across countries and contact reasons. The key metrics are contact volume, AHT, FCR, CSAT, backlog, compensation cost, cancellation rate, and contact rate.
+Customer Support leadership needs a weekly business review across countries and contact reasons. The key KPIs are contact volume, contact rate, AHT, FCR, CSAT, backlog, compensation cost, and cancellation rate.
 
-This project intentionally starts from raw operational tables rather than a clean CSV, because AI-enabled analytics depends on trusted data foundations, consistent KPI definitions, and quality controls. The second milestone then turns that mart into a repeatable weekly diagnostics workflow.
+One governed semantic KPI layer supports multiple consumption channels: automated business reporting, analyst diagnostics, KPI governance documentation, and future BI implementation.
 
-## Architecture
+## Project Layers
 
-```text
-raw_contacts          -> stg_contacts          -> int_contact_resolution_features
-raw_orders            -> stg_orders            -> int_order_fulfillment_features
-raw_csat_surveys      -> stg_csat_surveys      -> int_contact_csat
-raw_compensation      -> stg_compensation      -> int_contact_compensation
-raw_agent_activity    -> stg_agent_activity    -> int_staffing_capacity
-dim_country           -> dim_country
-dim_contact_reason    -> dim_contact_reason
+| Layer | What it does | Key artifact |
+| --- | --- | --- |
+| Raw synthetic data | Creates mock customer support data for a safe portfolio project | [`data/raw/`](data/raw/) |
+| Staging | Cleans and standardizes the source data | [`models/staging/`](models/staging/) |
+| Intermediate models | Adds business logic for orders, contacts, CSAT, compensation, and staffing | [`models/intermediate/`](models/intermediate/) |
+| KPI mart | Creates the weekly KPI table used as the single source for reporting and diagnostics | [`data/marts/mart_weekly_cs_kpi_by_country_reason.csv`](data/marts/mart_weekly_cs_kpi_by_country_reason.csv) |
+| Semantic layer | Defines each KPI, its grain, owner, caveats, and AI-safe usage rules | [`models/semantic/semantic_cs_kpi_metrics.yml`](models/semantic/semantic_cs_kpi_metrics.yml) |
+| AI-ready quality checks | Checks whether the KPI layer is reliable and safe for AI-assisted analysis | [`docs/data_quality_results.md`](docs/data_quality_results.md) |
+| Orchestration | Shows how the workflow runs from data generation to dashboard output | [`orchestration/airflow_dag.py`](orchestration/airflow_dag.py) / [`scripts/`](scripts/) |
+| AI data governance | Shows KPI definitions, lineage, quality checks, caveats, and single source of truth | [`dashboard/kpi_governance.html`](dashboard/kpi_governance.html) |
+| Business reporting & analyst diagnostics | Shows weekly KPI reporting and diagnostic signals for analysts to validate and escalate | [`dashboard/kpi_reporting.html`](dashboard/kpi_reporting.html) · [`dashboard/index.html`](dashboard/index.html) |
 
-intermediate models -> mart_weekly_cs_kpi_by_country_reason
-mart + definitions  -> semantic layer / AI-safe analytical layer
+## Orchestration And Dependencies
+
+```mermaid
+flowchart LR
+    A["Raw synthetic data<br/>orders · contacts · CSAT · compensation · staffing"]
+    B["Staging models<br/>clean and standardize source data"]
+    C["Intermediate models<br/>business logic for support operations"]
+    D["Governed weekly KPI mart<br/>single source for KPI reporting"]
+    E["Semantic layer<br/>KPI definitions · grain · caveats · AI-safe rules"]
+    F["AI-ready quality checks<br/>trust and safety validation"]
+    G["KPI Reporting Dashboard<br/>weekly business view"]
+    H["Weekly Diagnostics Dashboard<br/>analyst validation and escalation"]
+    I["KPI Governance Page<br/>metric trust and single source of truth"]
+    J["Weekly diagnostic report<br/>analyst-readable summary"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    D --> G
+    D --> H
+    D --> J
+    E --> I
+    F --> I
 ```
+
+| Step | What happens | Output |
+| --- | --- | --- |
+| 1 | Generate synthetic data | Raw CSV inputs |
+| 2 | Build SQL layers | Staging, intermediate, and KPI mart |
+| 3 | Run quality checks | AI-ready validation results |
+| 4 | Run diagnostics | Weekly movement signals and analyst queue |
+| 5 | Generate views | KPI reporting, diagnostics, and governance pages |
+
+## Dashboard Versions
+
+- [KPI Reporting Dashboard](dashboard/kpi_reporting.html): standard weekly business view from the governed KPI mart. It answers: how is customer support performance trending?
+- [Weekly Diagnostics Dashboard](dashboard/index.html): latest-week movement detection, confidence flags, business impact, and analyst validation queue. It answers: what changed this week, and what should analysts investigate first?
+- [KPI Governance Page](dashboard/kpi_governance.html): KPI definitions, ownership, quality status, lineage, caveats, and AI-safe usage policy. It answers: can we trust these KPIs, how are they defined, and can AI safely use them?
+
+Live views:
+
+- KPI Reporting Dashboard: https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/kpi_reporting.html
+- Weekly Diagnostics Dashboard: https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/
+- KPI Governance Page: https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/kpi_governance.html
 
 ## How To Run
 
@@ -47,34 +81,14 @@ python3 scripts/build_sqlite_stack.py
 python3 scripts/run_weekly_diagnostics.py
 ```
 
-Outputs:
+## What This Demonstrates
 
-- `build/ai_analytics.db`
-- `data/marts/mart_weekly_cs_kpi_by_country_reason.csv`
-- `docs/data_quality_results.md`
-- `analysis/weekly_kpi_diagnostics.csv`
-- `analysis/weekly_country_summary.csv`
-- `analysis/weekly_kpi_summary.json`
-- `reports/weekly_diagnostics_summary.md`
-- `dashboard/index.html`
-- `dashboard/kpi_reporting.html`
-- `dashboard/kpi_governance.html`
-
-## Dashboard Versions
-
-The current visualization layer uses three static HTML pages generated by `scripts/run_weekly_diagnostics.py` from the governed KPI mart and semantic metric definitions.
-
-- Weekly Diagnostics Dashboard, `dashboard/index.html`: automated HTML page showing latest-week movement detection, anomaly ranking, confidence flags, business impact, and analyst validation queue. It answers: what changed this week, and what should analysts investigate first?
-- KPI Reporting Dashboard, `dashboard/kpi_reporting.html`: automated HTML page showing standard business KPI reporting from the governed KPI mart. It answers: how is customer support performance trending?
-- KPI Governance Page, `dashboard/kpi_governance.html`: automated HTML page showing KPI definitions, metric ownership, data quality, lineage, caveats, and AI-safe usage policy. It answers: can we trust these KPIs, how are they defined, and can AI safely use them?
-- `analysis/weekly_kpi_summary.json`: structured source payload used by the dashboard generator.
-- `analysis/weekly_kpi_diagnostics.csv`: segment-level movement analysis behind the diagnostic queue.
-
-The dashboards are generated locally and do not require external BI tools.
-
-Live dashboard:
-
-- https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/
+- End-to-end analytics automation from raw data to reusable business views
+- SQL-style transformation layers and a governed KPI mart
+- KPI definitions, caveats, ownership, and AI-safe usage rules
+- Data quality gates before reporting or AI-assisted analysis
+- Orchestration thinking for repeatable weekly refresh
+- Analyst-grade diagnostics with confidence, business impact, and validation prompts
 
 ## Future Roadmap
 
@@ -87,20 +101,3 @@ Phase 3 - optional future work:
 - Manually build a public Looker Studio KPI Reporting Dashboard and add the public link to the GitHub README.
 
 Phase 2 and Phase 3 are optional future roadmap items, not part of the current implementation.
-
-## What This Demonstrates
-
-- Raw-to-mart analytics engineering design
-- dbt-style model layering without requiring dbt to run locally
-- Metric definition and semantic layer thinking
-- Incremental loading and late-arriving data design
-- Airflow-style orchestration and dependency management
-- Data quality gates before analysis or AI
-- Privacy controls for AI-ready analytics
-- Weekly KPI movement diagnostics against a four-week baseline
-- Reproducible HTML dashboard generation from governed KPI outputs
-- Rule-based analyst hypotheses that can feed a future AI WBR workflow
-
-## Data Privacy
-
-All data is synthetic. IDs are hashed-looking synthetic identifiers. The project does not include names, emails, phone numbers, addresses, or customer message text. The AI-safe layer is aggregated to weekly country/contact-reason grain.

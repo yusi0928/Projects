@@ -844,8 +844,8 @@ def write_report(summary):
 
 def nav_html(active):
     links = [
-        ("diagnostics", "Weekly Diagnostics Dashboard", "index.html"),
         ("reporting", "KPI Reporting Dashboard", "kpi_reporting.html"),
+        ("diagnostics", "Weekly Diagnostics Dashboard", "index.html"),
         ("governance", "KPI Governance Page", "kpi_governance.html"),
     ]
     return "".join(
