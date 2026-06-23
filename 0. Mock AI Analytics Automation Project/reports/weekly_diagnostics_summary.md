@@ -1,6 +1,6 @@
 # Weekly KPI Diagnostics Summary
 
-Generated at: `2026-06-22T21:54:13`
+Generated at: `2026-06-23T20:23:30`
 
 ## Diagnostic Frame
 
@@ -25,16 +25,16 @@ Generated at: `2026-06-22T21:54:13`
 
 ## Top Diagnostic Signals
 
-| Segment | Metric | Latest vs baseline | Severity | Analyst hypothesis |
-| --- | --- | ---: | --- | --- |
-| Poland / Account issue | CSAT | 3.00 vs 4.50; -1.50 | high | Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated. |
-| Austria / Payment issue | CSAT | 3.67 vs 4.62; -0.96 | high | Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated. |
-| United Kingdom / Cancellation | CSAT | 3.50 vs 4.27; -0.77 | high | Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated. |
-| United Kingdom / Cancellation | FCR | 85.7% vs 100.0%; -14.3 pp | high | Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities. |
-| Netherlands / Payment issue | CSAT | 3.33 vs 4.00; -0.67 | high | Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated. |
-| Netherlands / Late delivery | FCR | 82.1% vs 93.8%; -11.6 pp | high | Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities. |
-| Poland / Late delivery | FCR | 72.7% vs 84.0%; -11.3 pp | high | Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities. |
-| Germany / Payment issue | FCR | 85.7% vs 96.4%; -10.7 pp | high | Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities. |
+| Segment | Metric | Latest vs baseline | Severity | Confidence | Business impact | Analyst hypothesis |
+| --- | --- | ---: | --- | --- | --- | --- |
+| Germany / Late delivery | FCR | 84.6% vs 89.3%; -4.7 pp | high | high | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| Netherlands / Late delivery | FCR | 82.1% vs 93.8%; -11.6 pp | high | high | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| Poland / Late delivery | FCR | 72.7% vs 84.0%; -11.3 pp | high | high | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| Austria / Late delivery | FCR | 84.6% vs 91.4%; -6.8 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| Germany / Cancellation | FCR | 88.9% vs 95.5%; -6.6 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| Germany / Missing item | FCR | 88.2% vs 96.2%; -8.0 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| Germany / Payment issue | FCR | 85.7% vs 96.4%; -10.7 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| United Kingdom / Cancellation | FCR | 85.7% vs 100.0%; -14.3 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
 
 ## Quality And Interpretation Notes
 

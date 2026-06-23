@@ -1,41 +1,41 @@
-# Mock AI Analytics Automation Project: Synthetic CS Operations Pipeline
+# AI Analytics: AI-Ready CS Operations Analytics Stack
 
-This is a self-initiated mock analytics project that simulates a marketplace customer support operations environment. It demonstrates how an analyst can build an end-to-end analytics automation workflow from synthetic raw data to governed KPI marts, semantic definitions, weekly diagnostics, and a reproducible HTML dashboard.
+This repository is a self-initiated synthetic/mock portfolio project that simulates a marketplace customer support analytics stack. It demonstrates how an analyst can move from trusted data foundations to governed KPI reporting, weekly diagnostics, reproducible HTML dashboards, and AI-assisted business review preparation. No real customer, employee, financial, employer, or proprietary company data is used.
 
-## Data Disclaimer
+The current project includes two milestones:
 
-This is a mock portfolio project built with fully synthetic data. It does not contain real customer, company, employee, operational, financial, or proprietary data from any current or former employer. The project is designed solely to demonstrate analytics automation skills, including data preparation, SQL transformation, semantic KPI design, orchestration thinking, data quality checks, diagnostics, and dashboard generation.
-
-## Business Scenario
-
-Customer Support leadership needs a weekly business review across countries and contact reasons. The sample KPI set includes contact volume, AHT, FCR, CSAT, backlog, compensation cost, cancellation rate, and contact rate.
-
-## Step-By-Step Pipeline
-
-```mermaid
-flowchart LR
-  A["1. Synthetic raw data<br/>data/raw/*.csv"] --> B["2. Staging models<br/>models/staging/*.sql"]
-  B --> C["3. Business logic<br/>models/intermediate/*.sql"]
-  C --> D["4. Weekly KPI mart<br/>data/marts/*.csv"]
-  D --> E["5. Semantic layer<br/>models/semantic/*.yml"]
-  E --> F["6. Quality + governance<br/>docs/*.md"]
-  F --> G["7. Weekly diagnostics<br/>analysis/*.csv + reports/*.md"]
-  G --> H["8. HTML dashboard<br/>dashboard/index.html"]
+```text
+synthetic raw operational data
+-> staging models
+-> intermediate business logic
+-> governed weekly KPI mart
+-> semantic metric definitions
+-> quality checks, orchestration design, privacy controls
+-> multiple HTML consumption pages
 ```
 
-## Evidence By Step
+One governed semantic KPI layer supports multiple consumption channels: automated HTML reporting, KPI governance documentation, weekly diagnostics, and future BI implementation.
 
-| Step | What it shows | Files |
-| --- | --- | --- |
-| Synthetic raw data | Mock operational inputs for orders, contacts, CSAT, compensation, and agent activity | [`data/raw/`](data/raw/) |
-| Staging models | SQL cleaning and standardization layer | [`models/staging/`](models/staging/) |
-| Intermediate logic | Business rules for resolution, fulfillment, compensation, CSAT, and staffing | [`models/intermediate/`](models/intermediate/) |
-| KPI mart | Weekly country/contact-reason KPI output | [`data/marts/mart_weekly_cs_kpi_by_country_reason.csv`](data/marts/mart_weekly_cs_kpi_by_country_reason.csv) |
-| Semantic layer | Metric definitions and AI-safe analytical layer | [`models/semantic/semantic_cs_kpi_metrics.yml`](models/semantic/semantic_cs_kpi_metrics.yml) |
-| Orchestration | Airflow-style task dependency and refresh design | [`orchestration/airflow_dag.py`](orchestration/airflow_dag.py) |
-| Quality and governance | Data quality checks, privacy controls, lineage, operating model | [`docs/data_quality_results.md`](docs/data_quality_results.md), [`docs/privacy_controls.md`](docs/privacy_controls.md), [`docs/data_lineage.md`](docs/data_lineage.md) |
-| Weekly diagnostics | Latest week vs four-week baseline, anomaly ranking, analyst hypotheses | [`analysis/weekly_kpi_diagnostics.csv`](analysis/weekly_kpi_diagnostics.csv), [`reports/weekly_diagnostics_summary.md`](reports/weekly_diagnostics_summary.md) |
-| Final dashboard | Static HTML dashboard with KPI cards, trends, anomaly chart, and analyst queue | [Live dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/) and [source HTML](dashboard/index.html) |
+## Business Context
+
+Customer Support leadership needs a weekly business review across countries and contact reasons. The key metrics are contact volume, AHT, FCR, CSAT, backlog, compensation cost, cancellation rate, and contact rate.
+
+This project intentionally starts from raw operational tables rather than a clean CSV, because AI-enabled analytics depends on trusted data foundations, consistent KPI definitions, and quality controls. The second milestone then turns that mart into a repeatable weekly diagnostics workflow.
+
+## Architecture
+
+```text
+raw_contacts          -> stg_contacts          -> int_contact_resolution_features
+raw_orders            -> stg_orders            -> int_order_fulfillment_features
+raw_csat_surveys      -> stg_csat_surveys      -> int_contact_csat
+raw_compensation      -> stg_compensation      -> int_contact_compensation
+raw_agent_activity    -> stg_agent_activity    -> int_staffing_capacity
+dim_country           -> dim_country
+dim_contact_reason    -> dim_contact_reason
+
+intermediate models -> mart_weekly_cs_kpi_by_country_reason
+mart + definitions  -> semantic layer / AI-safe analytical layer
+```
 
 ## How To Run
 
@@ -47,25 +47,60 @@ python3 scripts/build_sqlite_stack.py
 python3 scripts/run_weekly_diagnostics.py
 ```
 
-Generated outputs:
+Outputs:
 
+- `build/ai_analytics.db`
 - `data/marts/mart_weekly_cs_kpi_by_country_reason.csv`
 - `docs/data_quality_results.md`
 - `analysis/weekly_kpi_diagnostics.csv`
+- `analysis/weekly_country_summary.csv`
 - `analysis/weekly_kpi_summary.json`
 - `reports/weekly_diagnostics_summary.md`
-- Live dashboard: https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/
-- Source HTML: `dashboard/index.html`
+- `dashboard/index.html`
+- `dashboard/kpi_reporting.html`
+- `dashboard/kpi_governance.html`
 
-The SQLite database is generated locally under `build/` and is intentionally not committed.
+## Dashboard Versions
+
+The current visualization layer uses three static HTML pages generated by `scripts/run_weekly_diagnostics.py` from the governed KPI mart and semantic metric definitions.
+
+- Weekly Diagnostics Dashboard, `dashboard/index.html`: automated HTML page showing latest-week movement detection, anomaly ranking, confidence flags, business impact, and analyst validation queue. It answers: what changed this week, and what should analysts investigate first?
+- KPI Reporting Dashboard, `dashboard/kpi_reporting.html`: automated HTML page showing standard business KPI reporting from the governed KPI mart. It answers: how is customer support performance trending?
+- KPI Governance Page, `dashboard/kpi_governance.html`: automated HTML page showing KPI definitions, metric ownership, data quality, lineage, caveats, and AI-safe usage policy. It answers: can we trust these KPIs, how are they defined, and can AI safely use them?
+- `analysis/weekly_kpi_summary.json`: structured source payload used by the dashboard generator.
+- `analysis/weekly_kpi_diagnostics.csv`: segment-level movement analysis behind the diagnostic queue.
+
+The dashboards are generated locally and do not require external BI tools.
+
+Live dashboard:
+
+- https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/
+
+## Future Roadmap
+
+Phase 2 - optional future work:
+
+- Prepare Looker Studio build materials, such as dashboard specs, calculated fields, chart mapping, and clean data source files.
+
+Phase 3 - optional future work:
+
+- Manually build a public Looker Studio KPI Reporting Dashboard and add the public link to the GitHub README.
+
+Phase 2 and Phase 3 are optional future roadmap items, not part of the current implementation.
 
 ## What This Demonstrates
 
-- Data automation from raw synthetic files to analytical outputs
-- SQL-based analytics engineering with staging, intermediate, and mart layers
-- KPI definition and semantic layer thinking
-- Data quality gates before downstream analytics or AI summaries
-- Privacy and AI-safe aggregation controls
-- Orchestration and rolling reprocessing design
-- Weekly KPI diagnostics and analyst validation prompts
-- Reproducible HTML dashboard generation
+- Raw-to-mart analytics engineering design
+- dbt-style model layering without requiring dbt to run locally
+- Metric definition and semantic layer thinking
+- Incremental loading and late-arriving data design
+- Airflow-style orchestration and dependency management
+- Data quality gates before analysis or AI
+- Privacy controls for AI-ready analytics
+- Weekly KPI movement diagnostics against a four-week baseline
+- Reproducible HTML dashboard generation from governed KPI outputs
+- Rule-based analyst hypotheses that can feed a future AI WBR workflow
+
+## Data Privacy
+
+All data is synthetic. IDs are hashed-looking synthetic identifiers. The project does not include names, emails, phone numbers, addresses, or customer message text. The AI-safe layer is aggregated to weekly country/contact-reason grain.

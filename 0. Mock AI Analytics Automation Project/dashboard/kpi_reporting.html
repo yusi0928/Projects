@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Analytics KPI Reporting Dashboard</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #0f172a; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; }
+    header { padding: 28px clamp(18px, 4vw, 56px) 18px; border-bottom: 1px solid #dbe3ef; }
+    nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    nav a { color: #0f172a; text-decoration: none; border: 1px solid #dbe3ef; border-radius: 6px; padding: 7px 10px; }
+    nav a.active { color: #fff; background: #0f172a; border-color: #0f172a; }
+    h1 { margin: 0; font-size: clamp(26px, 4vw, 42px); letter-spacing: 0; }
+    header p, .note { color: #475569; line-height: 1.55; max-width: 900px; }
+    main { padding: 24px clamp(18px, 4vw, 56px) 48px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; color: #475569; font-size: 14px; }
+    .meta span { border: 1px solid #dbe3ef; border-radius: 6px; padding: 6px 9px; background: #f8fafc; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .kpi { border: 1px solid #dbe3ef; border-radius: 8px; padding: 14px; min-height: 110px; }
+    .kpi span { color: #475569; font-size: 13px; }
+    .kpi strong { display: block; margin-top: 10px; font-size: 26px; letter-spacing: 0; }
+    .kpi small { display: block; margin-top: 8px; color: #475569; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .panel { border: 1px solid #dbe3ef; border-radius: 8px; padding: 16px; overflow: hidden; }
+    .wide { grid-column: 1 / -1; }
+    .panel-heading span { color: #2563eb; font-weight: 700; font-size: 12px; text-transform: uppercase; }
+    .panel-heading h2 { margin: 3px 0 12px; font-size: 18px; letter-spacing: 0; }
+    svg { width: 100%; height: auto; display: block; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid #dbe3ef; text-align: left; vertical-align: top; }
+    th { color: #475569; font-size: 12px; text-transform: uppercase; }
+    @media (max-width: 900px) { .kpi-grid, .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a class="" href="index.html">Weekly Diagnostics Dashboard</a><a class="active" href="kpi_reporting.html">KPI Reporting Dashboard</a><a class="" href="kpi_governance.html">KPI Governance Page</a></nav>
+    <h1>KPI Reporting Dashboard</h1>
+    <p>Answers: how is customer support performance trending? This is the standard reporting view from the governed KPI mart, separate from anomaly investigation.</p>
+    <div class="meta">
+      <span>Latest week: 2026-04-20</span>
+      <span>Source: data/marts/mart_weekly_cs_kpi_by_country_reason.csv</span>
+      <span>Synthetic/mock portfolio project. No real customer, employee, financial, employer, or proprietary company data is used.</span>
+    </div>
+  </header>
+  <main>
+    <section class="kpi-grid">
+            <section class="kpi">
+              <span>Contact volume</span>
+              <strong>354</strong>
+              <small>Context-dependent is favorable</small>
+            </section>
+            <section class="kpi">
+              <span>Contact rate</span>
+              <strong>10.1%</strong>
+              <small>Lower is favorable</small>
+            </section>
+            <section class="kpi">
+              <span>AHT</span>
+              <strong>7.6 min</strong>
+              <small>Lower is favorable</small>
+            </section>
+            <section class="kpi">
+              <span>FCR</span>
+              <strong>89.7%</strong>
+              <small>Higher is favorable</small>
+            </section>
+            <section class="kpi">
+              <span>CSAT</span>
+              <strong>4.11</strong>
+              <small>Higher is favorable</small>
+            </section>
+            <section class="kpi">
+              <span>Compensation cost</span>
+              <strong>EUR 996</strong>
+              <small>Lower is favorable</small>
+            </section></section>
+    <section class="grid">
+      
+            <section class="panel">
+              <div class="panel-heading"><span>KPI trend</span><h2>Contact volume</h2></div>
+              
+<svg viewBox="0 0 760 280" role="img" aria-label="Contact volume trend">
+  <rect width="760" height="280" fill="#ffffff" />
+  <line x1="64" y1="234.0" x2="736" y2="234.0" stroke="#e5e7eb" /><text x="54" y="238.0" text-anchor="end" font-size="11" fill="#475569">280</text><line x1="64" y1="181.5" x2="736" y2="181.5" stroke="#e5e7eb" /><text x="54" y="185.5" text-anchor="end" font-size="11" fill="#475569">310</text><line x1="64" y1="129.0" x2="736" y2="129.0" stroke="#e5e7eb" /><text x="54" y="133.0" text-anchor="end" font-size="11" fill="#475569">340</text><line x1="64" y1="76.5" x2="736" y2="76.5" stroke="#e5e7eb" /><text x="54" y="80.5" text-anchor="end" font-size="11" fill="#475569">371</text><line x1="64" y1="24.0" x2="736" y2="24.0" stroke="#e5e7eb" /><text x="54" y="28.0" text-anchor="end" font-size="11" fill="#475569">401</text>
+  <polyline points="64.0,116.0 108.8,234.0 153.6,230.5 198.4,161.1 243.2,218.4 288.0,213.2 332.8,176.7 377.6,195.8 422.4,213.2 467.2,183.7 512.0,208.0 556.8,140.3 601.6,162.8 646.4,114.2 691.2,24.0 736.0,105.6" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="64.0" cy="116.0" r="3.5" fill="#2563eb" />
+<circle cx="108.8" cy="234.0" r="3.5" fill="#2563eb" />
+<circle cx="153.6" cy="230.5" r="3.5" fill="#2563eb" />
+<circle cx="198.4" cy="161.1" r="3.5" fill="#2563eb" />
+<circle cx="243.2" cy="218.4" r="3.5" fill="#2563eb" />
+<circle cx="288.0" cy="213.2" r="3.5" fill="#2563eb" />
+<circle cx="332.8" cy="176.7" r="3.5" fill="#2563eb" />
+<circle cx="377.6" cy="195.8" r="3.5" fill="#2563eb" />
+<circle cx="422.4" cy="213.2" r="3.5" fill="#2563eb" />
+<circle cx="467.2" cy="183.7" r="3.5" fill="#2563eb" />
+<circle cx="512.0" cy="208.0" r="3.5" fill="#2563eb" />
+<circle cx="556.8" cy="140.3" r="3.5" fill="#2563eb" />
+<circle cx="601.6" cy="162.8" r="3.5" fill="#2563eb" />
+<circle cx="646.4" cy="114.2" r="3.5" fill="#2563eb" />
+<circle cx="691.2" cy="24.0" r="3.5" fill="#2563eb" />
+<circle cx="736.0" cy="105.6" r="3.5" fill="#2563eb" />
+  <line x1="64" y1="234" x2="736" y2="234" stroke="#94a3b8" />
+  <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
+</svg>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><span>KPI trend</span><h2>Contact rate</h2></div>
+              
+<svg viewBox="0 0 760 280" role="img" aria-label="Contact rate trend">
+  <rect width="760" height="280" fill="#ffffff" />
+  <line x1="64" y1="234.0" x2="736" y2="234.0" stroke="#e5e7eb" /><text x="54" y="238.0" text-anchor="end" font-size="11" fill="#475569">8.1%</text><line x1="64" y1="181.5" x2="736" y2="181.5" stroke="#e5e7eb" /><text x="54" y="185.5" text-anchor="end" font-size="11" fill="#475569">9.0%</text><line x1="64" y1="129.0" x2="736" y2="129.0" stroke="#e5e7eb" /><text x="54" y="133.0" text-anchor="end" font-size="11" fill="#475569">9.8%</text><line x1="64" y1="76.5" x2="736" y2="76.5" stroke="#e5e7eb" /><text x="54" y="80.5" text-anchor="end" font-size="11" fill="#475569">10.7%</text><line x1="64" y1="24.0" x2="736" y2="24.0" stroke="#e5e7eb" /><text x="54" y="28.0" text-anchor="end" font-size="11" fill="#475569">11.6%</text>
+  <polyline points="64.0,119.4 108.8,234.0 153.6,207.4 198.4,162.0 243.2,208.5 288.0,209.2 332.8,157.8 377.6,179.3 422.4,192.4 467.2,167.6 512.0,197.1 556.8,118.1 601.6,148.1 646.4,94.6 691.2,24.0 736.0,114.3" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="64.0" cy="119.4" r="3.5" fill="#2563eb" />
+<circle cx="108.8" cy="234.0" r="3.5" fill="#2563eb" />
+<circle cx="153.6" cy="207.4" r="3.5" fill="#2563eb" />
+<circle cx="198.4" cy="162.0" r="3.5" fill="#2563eb" />
+<circle cx="243.2" cy="208.5" r="3.5" fill="#2563eb" />
+<circle cx="288.0" cy="209.2" r="3.5" fill="#2563eb" />
+<circle cx="332.8" cy="157.8" r="3.5" fill="#2563eb" />
+<circle cx="377.6" cy="179.3" r="3.5" fill="#2563eb" />
+<circle cx="422.4" cy="192.4" r="3.5" fill="#2563eb" />
+<circle cx="467.2" cy="167.6" r="3.5" fill="#2563eb" />
+<circle cx="512.0" cy="197.1" r="3.5" fill="#2563eb" />
+<circle cx="556.8" cy="118.1" r="3.5" fill="#2563eb" />
+<circle cx="601.6" cy="148.1" r="3.5" fill="#2563eb" />
+<circle cx="646.4" cy="94.6" r="3.5" fill="#2563eb" />
+<circle cx="691.2" cy="24.0" r="3.5" fill="#2563eb" />
+<circle cx="736.0" cy="114.3" r="3.5" fill="#2563eb" />
+  <line x1="64" y1="234" x2="736" y2="234" stroke="#94a3b8" />
+  <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
+</svg>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><span>KPI trend</span><h2>AHT</h2></div>
+              
+<svg viewBox="0 0 760 280" role="img" aria-label="AHT trend">
+  <rect width="760" height="280" fill="#ffffff" />
+  <line x1="64" y1="234.0" x2="736" y2="234.0" stroke="#e5e7eb" /><text x="54" y="238.0" text-anchor="end" font-size="11" fill="#475569">7.5 min</text><line x1="64" y1="181.5" x2="736" y2="181.5" stroke="#e5e7eb" /><text x="54" y="185.5" text-anchor="end" font-size="11" fill="#475569">7.8 min</text><line x1="64" y1="129.0" x2="736" y2="129.0" stroke="#e5e7eb" /><text x="54" y="133.0" text-anchor="end" font-size="11" fill="#475569">8.1 min</text><line x1="64" y1="76.5" x2="736" y2="76.5" stroke="#e5e7eb" /><text x="54" y="80.5" text-anchor="end" font-size="11" fill="#475569">8.4 min</text><line x1="64" y1="24.0" x2="736" y2="24.0" stroke="#e5e7eb" /><text x="54" y="28.0" text-anchor="end" font-size="11" fill="#475569">8.7 min</text>
+  <polyline points="64.0,187.6 108.8,203.6 153.6,181.5 198.4,183.1 243.2,179.1 288.0,234.0 332.8,222.1 377.6,193.9 422.4,174.7 467.2,207.6 512.0,231.1 556.8,24.0 601.6,61.7 646.4,152.8 691.2,221.6 736.0,222.9" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="64.0" cy="187.6" r="3.5" fill="#2563eb" />
+<circle cx="108.8" cy="203.6" r="3.5" fill="#2563eb" />
+<circle cx="153.6" cy="181.5" r="3.5" fill="#2563eb" />
+<circle cx="198.4" cy="183.1" r="3.5" fill="#2563eb" />
+<circle cx="243.2" cy="179.1" r="3.5" fill="#2563eb" />
+<circle cx="288.0" cy="234.0" r="3.5" fill="#2563eb" />
+<circle cx="332.8" cy="222.1" r="3.5" fill="#2563eb" />
+<circle cx="377.6" cy="193.9" r="3.5" fill="#2563eb" />
+<circle cx="422.4" cy="174.7" r="3.5" fill="#2563eb" />
+<circle cx="467.2" cy="207.6" r="3.5" fill="#2563eb" />
+<circle cx="512.0" cy="231.1" r="3.5" fill="#2563eb" />
+<circle cx="556.8" cy="24.0" r="3.5" fill="#2563eb" />
+<circle cx="601.6" cy="61.7" r="3.5" fill="#2563eb" />
+<circle cx="646.4" cy="152.8" r="3.5" fill="#2563eb" />
+<circle cx="691.2" cy="221.6" r="3.5" fill="#2563eb" />
+<circle cx="736.0" cy="222.9" r="3.5" fill="#2563eb" />
+  <line x1="64" y1="234" x2="736" y2="234" stroke="#94a3b8" />
+  <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
+</svg>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><span>KPI trend</span><h2>FCR</h2></div>
+              
+<svg viewBox="0 0 760 280" role="img" aria-label="FCR trend">
+  <rect width="760" height="280" fill="#ffffff" />
+  <line x1="64" y1="234.0" x2="736" y2="234.0" stroke="#e5e7eb" /><text x="54" y="238.0" text-anchor="end" font-size="11" fill="#475569">89.0%</text><line x1="64" y1="181.5" x2="736" y2="181.5" stroke="#e5e7eb" /><text x="54" y="185.5" text-anchor="end" font-size="11" fill="#475569">90.6%</text><line x1="64" y1="129.0" x2="736" y2="129.0" stroke="#e5e7eb" /><text x="54" y="133.0" text-anchor="end" font-size="11" fill="#475569">92.2%</text><line x1="64" y1="76.5" x2="736" y2="76.5" stroke="#e5e7eb" /><text x="54" y="80.5" text-anchor="end" font-size="11" fill="#475569">93.8%</text><line x1="64" y1="24.0" x2="736" y2="24.0" stroke="#e5e7eb" /><text x="54" y="28.0" text-anchor="end" font-size="11" fill="#475569">95.4%</text>
+  <polyline points="64.0,39.9 108.8,162.1 153.6,95.4 198.4,135.7 243.2,41.2 288.0,109.1 332.8,97.6 377.6,74.5 422.4,91.8 467.2,34.6 512.0,234.0 556.8,170.6 601.6,69.2 646.4,211.4 691.2,24.0 736.0,210.8" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="64.0" cy="39.9" r="3.5" fill="#2563eb" />
+<circle cx="108.8" cy="162.1" r="3.5" fill="#2563eb" />
+<circle cx="153.6" cy="95.4" r="3.5" fill="#2563eb" />
+<circle cx="198.4" cy="135.7" r="3.5" fill="#2563eb" />
+<circle cx="243.2" cy="41.2" r="3.5" fill="#2563eb" />
+<circle cx="288.0" cy="109.1" r="3.5" fill="#2563eb" />
+<circle cx="332.8" cy="97.6" r="3.5" fill="#2563eb" />
+<circle cx="377.6" cy="74.5" r="3.5" fill="#2563eb" />
+<circle cx="422.4" cy="91.8" r="3.5" fill="#2563eb" />
+<circle cx="467.2" cy="34.6" r="3.5" fill="#2563eb" />
+<circle cx="512.0" cy="234.0" r="3.5" fill="#2563eb" />
+<circle cx="556.8" cy="170.6" r="3.5" fill="#2563eb" />
+<circle cx="601.6" cy="69.2" r="3.5" fill="#2563eb" />
+<circle cx="646.4" cy="211.4" r="3.5" fill="#2563eb" />
+<circle cx="691.2" cy="24.0" r="3.5" fill="#2563eb" />
+<circle cx="736.0" cy="210.8" r="3.5" fill="#2563eb" />
+  <line x1="64" y1="234" x2="736" y2="234" stroke="#94a3b8" />
+  <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
+</svg>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><span>KPI trend</span><h2>CSAT</h2></div>
+              
+<svg viewBox="0 0 760 280" role="img" aria-label="CSAT trend">
+  <rect width="760" height="280" fill="#ffffff" />
+  <line x1="64" y1="234.0" x2="736" y2="234.0" stroke="#e5e7eb" /><text x="54" y="238.0" text-anchor="end" font-size="11" fill="#475569">3.86</text><line x1="64" y1="181.5" x2="736" y2="181.5" stroke="#e5e7eb" /><text x="54" y="185.5" text-anchor="end" font-size="11" fill="#475569">3.93</text><line x1="64" y1="129.0" x2="736" y2="129.0" stroke="#e5e7eb" /><text x="54" y="133.0" text-anchor="end" font-size="11" fill="#475569">4.00</text><line x1="64" y1="76.5" x2="736" y2="76.5" stroke="#e5e7eb" /><text x="54" y="80.5" text-anchor="end" font-size="11" fill="#475569">4.07</text><line x1="64" y1="24.0" x2="736" y2="24.0" stroke="#e5e7eb" /><text x="54" y="28.0" text-anchor="end" font-size="11" fill="#475569">4.13</text>
+  <polyline points="64.0,114.5 108.8,25.7 153.6,83.3 198.4,86.7 243.2,24.0 288.0,29.3 332.8,77.0 377.6,189.1 422.4,103.3 467.2,141.4 512.0,159.3 556.8,234.0 601.6,103.8 646.4,80.8 691.2,127.3 736.0,43.9" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="64.0" cy="114.5" r="3.5" fill="#2563eb" />
+<circle cx="108.8" cy="25.7" r="3.5" fill="#2563eb" />
+<circle cx="153.6" cy="83.3" r="3.5" fill="#2563eb" />
+<circle cx="198.4" cy="86.7" r="3.5" fill="#2563eb" />
+<circle cx="243.2" cy="24.0" r="3.5" fill="#2563eb" />
+<circle cx="288.0" cy="29.3" r="3.5" fill="#2563eb" />
+<circle cx="332.8" cy="77.0" r="3.5" fill="#2563eb" />
+<circle cx="377.6" cy="189.1" r="3.5" fill="#2563eb" />
+<circle cx="422.4" cy="103.3" r="3.5" fill="#2563eb" />
+<circle cx="467.2" cy="141.4" r="3.5" fill="#2563eb" />
+<circle cx="512.0" cy="159.3" r="3.5" fill="#2563eb" />
+<circle cx="556.8" cy="234.0" r="3.5" fill="#2563eb" />
+<circle cx="601.6" cy="103.8" r="3.5" fill="#2563eb" />
+<circle cx="646.4" cy="80.8" r="3.5" fill="#2563eb" />
+<circle cx="691.2" cy="127.3" r="3.5" fill="#2563eb" />
+<circle cx="736.0" cy="43.9" r="3.5" fill="#2563eb" />
+  <line x1="64" y1="234" x2="736" y2="234" stroke="#94a3b8" />
+  <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
+</svg>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><span>KPI trend</span><h2>Compensation cost</h2></div>
+              
+<svg viewBox="0 0 760 280" role="img" aria-label="Compensation cost trend">
+  <rect width="760" height="280" fill="#ffffff" />
+  <line x1="64" y1="234.0" x2="736" y2="234.0" stroke="#e5e7eb" /><text x="54" y="238.0" text-anchor="end" font-size="11" fill="#475569">EUR 728</text><line x1="64" y1="181.5" x2="736" y2="181.5" stroke="#e5e7eb" /><text x="54" y="185.5" text-anchor="end" font-size="11" fill="#475569">EUR 1,044</text><line x1="64" y1="129.0" x2="736" y2="129.0" stroke="#e5e7eb" /><text x="54" y="133.0" text-anchor="end" font-size="11" fill="#475569">EUR 1,360</text><line x1="64" y1="76.5" x2="736" y2="76.5" stroke="#e5e7eb" /><text x="54" y="80.5" text-anchor="end" font-size="11" fill="#475569">EUR 1,676</text><line x1="64" y1="24.0" x2="736" y2="24.0" stroke="#e5e7eb" /><text x="54" y="28.0" text-anchor="end" font-size="11" fill="#475569">EUR 1,992</text>
+  <polyline points="64.0,193.3 108.8,191.2 153.6,221.6 198.4,222.2 243.2,208.7 288.0,222.4 332.8,211.4 377.6,206.5 422.4,220.6 467.2,234.0 512.0,205.0 556.8,180.9 601.6,217.9 646.4,24.0 691.2,196.7 736.0,189.6" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="64.0" cy="193.3" r="3.5" fill="#2563eb" />
+<circle cx="108.8" cy="191.2" r="3.5" fill="#2563eb" />
+<circle cx="153.6" cy="221.6" r="3.5" fill="#2563eb" />
+<circle cx="198.4" cy="222.2" r="3.5" fill="#2563eb" />
+<circle cx="243.2" cy="208.7" r="3.5" fill="#2563eb" />
+<circle cx="288.0" cy="222.4" r="3.5" fill="#2563eb" />
+<circle cx="332.8" cy="211.4" r="3.5" fill="#2563eb" />
+<circle cx="377.6" cy="206.5" r="3.5" fill="#2563eb" />
+<circle cx="422.4" cy="220.6" r="3.5" fill="#2563eb" />
+<circle cx="467.2" cy="234.0" r="3.5" fill="#2563eb" />
+<circle cx="512.0" cy="205.0" r="3.5" fill="#2563eb" />
+<circle cx="556.8" cy="180.9" r="3.5" fill="#2563eb" />
+<circle cx="601.6" cy="217.9" r="3.5" fill="#2563eb" />
+<circle cx="646.4" cy="24.0" r="3.5" fill="#2563eb" />
+<circle cx="691.2" cy="196.7" r="3.5" fill="#2563eb" />
+<circle cx="736.0" cy="189.6" r="3.5" fill="#2563eb" />
+  <line x1="64" y1="234" x2="736" y2="234" stroke="#94a3b8" />
+  <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
+</svg>
+            </section>
+      <section class="panel wide">
+        <div class="panel-heading"><span>Country breakdown</span><h2>Latest week by country</h2></div>
+        <table><thead><tr><th>Country</th><th>Contacts</th><th>Contact rate</th><th>AHT</th><th>FCR</th><th>CSAT</th></tr></thead><tbody>
+            <tr>
+              <td>Germany</td>
+              <td>97</td>
+              <td>9.7%</td>
+              <td>7.8 min</td>
+              <td>86.9%</td>
+              <td>4.10</td>
+            </tr>
+            <tr>
+              <td>Netherlands</td>
+              <td>78</td>
+              <td>11.3%</td>
+              <td>7.8 min</td>
+              <td>90.4%</td>
+              <td>4.28</td>
+            </tr>
+            <tr>
+              <td>United Kingdom</td>
+              <td>72</td>
+              <td>8.3%</td>
+              <td>7.6 min</td>
+              <td>92.1%</td>
+              <td>4.00</td>
+            </tr>
+            <tr>
+              <td>Poland</td>
+              <td>66</td>
+              <td>11.9%</td>
+              <td>7.2 min</td>
+              <td>90.5%</td>
+              <td>4.25</td>
+            </tr>
+            <tr>
+              <td>Austria</td>
+              <td>41</td>
+              <td>10.4%</td>
+              <td>7.5 min</td>
+              <td>89.3%</td>
+              <td>3.89</td>
+            </tr></tbody></table>
+      </section>
+      <section class="panel wide">
+        <div class="panel-heading"><span>Contact reason breakdown</span><h2>Latest week by reason</h2></div>
+        <table><thead><tr><th>Reason</th><th>Contacts</th><th>Contact rate</th><th>AHT</th><th>FCR</th><th>Compensation</th></tr></thead><tbody>
+            <tr>
+              <td>Late delivery</td>
+              <td>128</td>
+              <td>3.6%</td>
+              <td>7.6 min</td>
+              <td>83.5%</td>
+              <td>EUR 544</td>
+            </tr>
+            <tr>
+              <td>Cancellation</td>
+              <td>75</td>
+              <td>2.1%</td>
+              <td>5.8 min</td>
+              <td>92.8%</td>
+              <td>EUR 0</td>
+            </tr>
+            <tr>
+              <td>Missing item</td>
+              <td>50</td>
+              <td>1.4%</td>
+              <td>7.2 min</td>
+              <td>93.8%</td>
+              <td>EUR 84</td>
+            </tr>
+            <tr>
+              <td>Refund request</td>
+              <td>45</td>
+              <td>1.3%</td>
+              <td>9.3 min</td>
+              <td>89.7%</td>
+              <td>EUR 368</td>
+            </tr>
+            <tr>
+              <td>Payment issue</td>
+              <td>32</td>
+              <td>0.9%</td>
+              <td>9.5 min</td>
+              <td>96.4%</td>
+              <td>EUR 0</td>
+            </tr>
+            <tr>
+              <td>Account issue</td>
+              <td>24</td>
+              <td>0.7%</td>
+              <td>8.3 min</td>
+              <td>95.2%</td>
+              <td>EUR 0</td>
+            </tr></tbody></table>
+      </section>
+      <section class="panel wide note">
+        <strong>Business interpretation notes.</strong> Use this page for recurring KPI reporting. For exception triage, use the Weekly Diagnostics Dashboard. Order-based metrics such as cancellation rate and contact rate require grain awareness because order volume is repeated across reason-level rows.
+      </section>
+    </section>
+  </main>
+</body>
+</html>

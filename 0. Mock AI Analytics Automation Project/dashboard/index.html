@@ -28,6 +28,9 @@
       padding: 28px clamp(18px, 4vw, 56px) 18px;
       border-bottom: 1px solid var(--line);
     }
+    nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    nav a { color: var(--ink); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; background: #fff; }
+    nav a.active { color: #fff; background: var(--ink); border-color: var(--ink); }
     header p { max-width: 880px; color: var(--muted); line-height: 1.55; margin: 8px 0 0; }
     h1 { margin: 0; font-size: clamp(26px, 4vw, 42px); letter-spacing: 0; }
     main { padding: 24px clamp(18px, 4vw, 56px) 48px; }
@@ -43,6 +46,10 @@
     .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .panel { border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow: hidden; }
     .panel.wide { grid-column: 1 / -1; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .summary-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--soft); }
+    .summary-card h2 { margin: 0 0 8px; font-size: 16px; }
+    .summary-card ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.45; }
     .panel-heading { margin-bottom: 12px; }
     .panel-heading span { color: var(--gold); font-weight: 700; font-size: 12px; text-transform: uppercase; }
     .panel-heading h2 { margin: 3px 0 0; font-size: 18px; letter-spacing: 0; }
@@ -54,25 +61,35 @@
     .pill.high { color: #991b1b; border-color: #fecaca; background: #fff1f2; }
     .pill.medium { color: #92400e; border-color: #fed7aa; background: #fff7ed; }
     .pill.monitor { color: #334155; background: var(--soft); }
+    .pill.confidence-high, .pill.impact-high { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
+    .pill.confidence-medium, .pill.impact-medium { color: #92400e; border-color: #fed7aa; background: #fff7ed; }
+    .pill.confidence-low, .pill.impact-low { color: #991b1b; border-color: #fecaca; background: #fff1f2; }
     .note { color: var(--muted); line-height: 1.55; }
     @media (max-width: 900px) {
-      .kpi-grid, .grid { grid-template-columns: 1fr; }
+      .kpi-grid, .grid, .summary-grid { grid-template-columns: 1fr; }
       table { font-size: 13px; }
-      th:nth-child(5), td:nth-child(5) { display: none; }
     }
   </style>
 </head>
 <body>
   <header>
+    <nav><a class="active" href="index.html">Weekly Diagnostics Dashboard</a><a class="" href="kpi_reporting.html">KPI Reporting Dashboard</a><a class="" href="kpi_governance.html">KPI Governance Page</a></nav>
     <h1>Weekly CS KPI Diagnostics</h1>
-    <p>Latest complete week compared with a four-week baseline. The dashboard highlights operational signals that an analyst should validate before turning them into an AI-assisted weekly business review.</p>
+    <p>Answers: what changed this week, and what should analysts investigate first? Signals support analyst validation and do not claim causality.</p>
     <div class="meta">
       <span>Latest week: 2026-04-20</span>
       <span>Baseline: 2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13</span>
       <span>Source: data/marts/mart_weekly_cs_kpi_by_country_reason.csv</span>
+      <span>Synthetic/mock portfolio project. No real customer, employee, financial, employer, or proprietary company data is used.</span>
     </div>
   </header>
   <main>
+    <section class="summary-grid">
+      <div class="summary-card"><h2>What changed this week?</h2><ul><li>FCR is -2.8 pp vs baseline</li></ul></div>
+      <div class="summary-card"><h2>Movement that matters most</h2><p class="note">Germany / Late delivery / FCR has high business impact and high confidence.</p></div>
+      <div class="summary-card"><h2>Investigate first</h2><ul><li>DE Late delivery FCR</li><li>NL Late delivery FCR</li><li>PL Late delivery FCR</li></ul></div>
+      <div class="summary-card"><h2>Low confidence</h2><ul><li>UK Cancellation CSAT</li><li>AT Payment issue CSAT</li><li>NL Payment issue CSAT</li></ul></div>
+    </section>
     <section class="kpi-grid">
       
             <section class="kpi neutral">
@@ -245,31 +262,91 @@
         </div>
         <svg viewBox="0 0 760 320" role="img" aria-label="Top weekly KPI anomalies">
 <rect width="760" height="320" fill="#ffffff" />
-<text x="198" y="36" text-anchor="end" font-size="12" fill="#0f172a">PL | Account issue | CSAT</text>
+<text x="198" y="36" text-anchor="end" font-size="12" fill="#0f172a">DE | Late delivery | FCR</text>
 <rect x="210" y="20" width="430.0" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="648.0" y="36" font-size="12" fill="#334155">-1.50</text>
-<text x="198" y="68" text-anchor="end" font-size="12" fill="#0f172a">AT | Payment issue | CSAT</text>
-<rect x="210" y="52" width="273.8" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="491.8" y="68" font-size="12" fill="#334155">-0.96</text>
-<text x="198" y="100" text-anchor="end" font-size="12" fill="#0f172a">UK | Cancellation | CSAT</text>
-<rect x="210" y="84" width="220.7" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="438.7" y="100" font-size="12" fill="#334155">-0.77</text>
-<text x="198" y="132" text-anchor="end" font-size="12" fill="#0f172a">UK | Cancellation | FCR</text>
-<rect x="210" y="116" width="204.8" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="422.8" y="132" font-size="12" fill="#334155">-14.3 pp</text>
-<text x="198" y="164" text-anchor="end" font-size="12" fill="#0f172a">NL | Payment issue | CSAT</text>
-<rect x="210" y="148" width="192.1" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="410.1" y="164" font-size="12" fill="#334155">-0.67</text>
-<text x="198" y="196" text-anchor="end" font-size="12" fill="#0f172a">NL | Late delivery | FCR</text>
-<rect x="210" y="180" width="166.8" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="384.8" y="196" font-size="12" fill="#334155">-11.6 pp</text>
-<text x="198" y="228" text-anchor="end" font-size="12" fill="#0f172a">PL | Late delivery | FCR</text>
-<rect x="210" y="212" width="162.2" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="380.2" y="228" font-size="12" fill="#334155">-11.3 pp</text>
-<text x="198" y="260" text-anchor="end" font-size="12" fill="#0f172a">DE | Payment issue | FCR</text>
-<rect x="210" y="244" width="153.6" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="371.6" y="260" font-size="12" fill="#334155">-10.7 pp</text>
+<text x="648.0" y="36" font-size="12" fill="#334155">-4.7 pp</text>
+<text x="198" y="68" text-anchor="end" font-size="12" fill="#0f172a">NL | Late delivery | FCR</text>
+<rect x="210" y="52" width="430.0" height="22" rx="3" fill="#dc2626" opacity="0.88" />
+<text x="648.0" y="68" font-size="12" fill="#334155">-11.6 pp</text>
+<text x="198" y="100" text-anchor="end" font-size="12" fill="#0f172a">PL | Late delivery | FCR</text>
+<rect x="210" y="84" width="430.0" height="22" rx="3" fill="#dc2626" opacity="0.88" />
+<text x="648.0" y="100" font-size="12" fill="#334155">-11.3 pp</text>
+<text x="198" y="132" text-anchor="end" font-size="12" fill="#0f172a">AT | Late delivery | FCR</text>
+<rect x="210" y="116" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
+<text x="497.5" y="132" font-size="12" fill="#334155">-6.8 pp</text>
+<text x="198" y="164" text-anchor="end" font-size="12" fill="#0f172a">DE | Cancellation | FCR</text>
+<rect x="210" y="148" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
+<text x="497.5" y="164" font-size="12" fill="#334155">-6.6 pp</text>
+<text x="198" y="196" text-anchor="end" font-size="12" fill="#0f172a">DE | Missing item | FCR</text>
+<rect x="210" y="180" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
+<text x="497.5" y="196" font-size="12" fill="#334155">-8.0 pp</text>
+<text x="198" y="228" text-anchor="end" font-size="12" fill="#0f172a">DE | Payment issue | FCR</text>
+<rect x="210" y="212" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
+<text x="497.5" y="228" font-size="12" fill="#334155">-10.7 pp</text>
+<text x="198" y="260" text-anchor="end" font-size="12" fill="#0f172a">UK | Cancellation | FCR</text>
+<rect x="210" y="244" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
+<text x="497.5" y="260" font-size="12" fill="#334155">-14.3 pp</text>
 </svg>
+      </section>
+      <section class="panel wide">
+        <div class="panel-heading">
+          <span>Priority review</span>
+          <h2>What should analysts investigate first?</h2>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Segment</th><th>Metric</th><th>Business impact</th><th>Confidence</th><th>Possible owner</th><th>Recommended next action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Germany / Late delivery</td>
+              <td>FCR</td>
+              <td>high</td>
+              <td>high</td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td>Netherlands / Late delivery</td>
+              <td>FCR</td>
+              <td>high</td>
+              <td>high</td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td>Poland / Late delivery</td>
+              <td>FCR</td>
+              <td>high</td>
+              <td>high</td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td>Austria / Late delivery</td>
+              <td>FCR</td>
+              <td>high</td>
+              <td>medium</td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td>Germany / Cancellation</td>
+              <td>FCR</td>
+              <td>high</td>
+              <td>medium</td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td>Germany / Missing item</td>
+              <td>FCR</td>
+              <td>high</td>
+              <td>medium</td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr></tbody>
+        </table>
       </section>
       <section class="panel wide">
         <div class="panel-heading">
@@ -279,113 +356,157 @@
         <table>
           <thead>
             <tr>
-              <th>Country</th>
-              <th>Reason</th>
-              <th>Metric</th>
+              <th>Signal</th>
               <th>Latest</th>
               <th>Baseline</th>
               <th>Change</th>
               <th>Severity</th>
+              <th>Confidence</th>
+              <th>Business impact</th>
+              <th>Why this matters</th>
+              <th>Suggested validation</th>
+              <th>Possible owner</th>
+              <th>Recommended next action</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Poland</td>
-              <td>Account issue</td>
-              <td>CSAT</td>
-              <td>3.00</td>
-              <td>4.50</td>
-              <td>-1.50</td>
+              <td><strong>DE / Late delivery / FCR</strong><br><small>Contacts 41; orders 999</small></td>
+              <td>84.6%</td>
+              <td>89.3%</td>
+              <td>-4.7 pp</td>
               <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
             </tr>
             <tr>
-              <td>Austria</td>
-              <td>Payment issue</td>
-              <td>CSAT</td>
-              <td>3.67</td>
-              <td>4.62</td>
-              <td>-0.96</td>
-              <td><span class="pill high">high</span></td>
-            </tr>
-            <tr>
-              <td>United Kingdom</td>
-              <td>Cancellation</td>
-              <td>CSAT</td>
-              <td>3.50</td>
-              <td>4.27</td>
-              <td>-0.77</td>
-              <td><span class="pill high">high</span></td>
-            </tr>
-            <tr>
-              <td>United Kingdom</td>
-              <td>Cancellation</td>
-              <td>FCR</td>
-              <td>85.7%</td>
-              <td>100.0%</td>
-              <td>-14.3 pp</td>
-              <td><span class="pill high">high</span></td>
-            </tr>
-            <tr>
-              <td>Netherlands</td>
-              <td>Payment issue</td>
-              <td>CSAT</td>
-              <td>3.33</td>
-              <td>4.00</td>
-              <td>-0.67</td>
-              <td><span class="pill high">high</span></td>
-            </tr>
-            <tr>
-              <td>Netherlands</td>
-              <td>Late delivery</td>
-              <td>FCR</td>
+              <td><strong>NL / Late delivery / FCR</strong><br><small>Contacts 30; orders 692</small></td>
               <td>82.1%</td>
               <td>93.8%</td>
               <td>-11.6 pp</td>
               <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
             </tr>
             <tr>
-              <td>Poland</td>
-              <td>Late delivery</td>
-              <td>FCR</td>
+              <td><strong>PL / Late delivery / FCR</strong><br><small>Contacts 23; orders 554</small></td>
               <td>72.7%</td>
               <td>84.0%</td>
               <td>-11.3 pp</td>
               <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
             </tr>
             <tr>
-              <td>Germany</td>
-              <td>Payment issue</td>
-              <td>FCR</td>
+              <td><strong>AT / Late delivery / FCR</strong><br><small>Contacts 13; orders 393</small></td>
+              <td>84.6%</td>
+              <td>91.4%</td>
+              <td>-6.8 pp</td>
+              <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td><strong>DE / Cancellation / FCR</strong><br><small>Contacts 19; orders 999</small></td>
+              <td>88.9%</td>
+              <td>95.5%</td>
+              <td>-6.6 pp</td>
+              <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td><strong>DE / Missing item / FCR</strong><br><small>Contacts 18; orders 999</small></td>
+              <td>88.2%</td>
+              <td>96.2%</td>
+              <td>-8.0 pp</td>
+              <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td><strong>DE / Payment issue / FCR</strong><br><small>Contacts 8; orders 999</small></td>
               <td>85.7%</td>
               <td>96.4%</td>
               <td>-10.7 pp</td>
               <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
             </tr>
             <tr>
-              <td>Austria</td>
-              <td>Refund request</td>
-              <td>FCR</td>
-              <td>80.0%</td>
-              <td>90.2%</td>
-              <td>-10.2 pp</td>
+              <td><strong>UK / Cancellation / FCR</strong><br><small>Contacts 16; orders 869</small></td>
+              <td>85.7%</td>
+              <td>100.0%</td>
+              <td>-14.3 pp</td>
               <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
             </tr>
             <tr>
-              <td>United Kingdom</td>
-              <td>Account issue</td>
-              <td>FCR</td>
+              <td><strong>UK / Account issue / FCR</strong><br><small>Contacts 8; orders 869</small></td>
               <td>85.7%</td>
               <td>95.8%</td>
               <td>-10.1 pp</td>
               <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 63.2</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
+            </tr>
+            <tr>
+              <td><strong>AT / Refund request / FCR</strong><br><small>Contacts 7; orders 393</small></td>
+              <td>80.0%</td>
+              <td>90.2%</td>
+              <td>-10.2 pp</td>
+              <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-high">high</span><br><small>score 55.6</small></td>
+              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
+              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Assign owner and review source records this week.</td>
             </tr></tbody>
         </table>
       </section>
       <section class="panel wide note">
-        <strong>Method note.</strong> Signals are generated with deterministic rules from synthetic data. They are designed to support analyst validation, not to claim causality. CSAT movements with low response counts and country-week order metrics repeated across reason rows require extra care.
+        <strong>Method note.</strong> Severity describes how unusual or large the movement is. Business impact estimates how much the business should care by considering affected contact volume, order volume, compensation cost, or operational importance. Confidence is reduced for low sample sizes, especially CSAT signals with few survey responses. Cancellation rate and order-based metrics are country-week metrics repeated across contact reasons and should not be summed across reasons.
       </section>
     </section>
   </main>
-  <script type="application/json" id="dashboard-data">{&quot;latest_week&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: [&quot;2026-03-23&quot;, &quot;2026-03-30&quot;, &quot;2026-04-06&quot;, &quot;2026-04-13&quot;], &quot;top_signals&quot;: [{&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Poland&quot;, &quot;country_code&quot;: &quot;PL&quot;, &quot;contact_reason_name&quot;: &quot;Account issue&quot;, &quot;contact_reason_id&quot;: &quot;account_issue&quot;, &quot;metric&quot;: &quot;avg_csat&quot;, &quot;metric_label&quot;: &quot;CSAT&quot;, &quot;current_value&quot;: 3.0, &quot;baseline_value&quot;: 4.5, &quot;abs_change&quot;: -1.5, &quot;pct_change&quot;: -0.3333333333333333, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 30.0, &quot;csat_responses&quot;: 1.0, &quot;contact_volume&quot;: 6.0, &quot;hypothesis&quot;: &quot;Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Austria&quot;, &quot;country_code&quot;: &quot;AT&quot;, &quot;contact_reason_name&quot;: &quot;Payment issue&quot;, &quot;contact_reason_id&quot;: &quot;payment_issue&quot;, &quot;metric&quot;: &quot;avg_csat&quot;, &quot;metric_label&quot;: &quot;CSAT&quot;, &quot;current_value&quot;: 3.67, &quot;baseline_value&quot;: 4.625, &quot;abs_change&quot;: -0.9550000000000001, &quot;pct_change&quot;: -0.20648648648648651, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 19.1, &quot;csat_responses&quot;: 3.0, &quot;contact_volume&quot;: 3.0, &quot;hypothesis&quot;: &quot;Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;United Kingdom&quot;, &quot;country_code&quot;: &quot;UK&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;avg_csat&quot;, &quot;metric_label&quot;: &quot;CSAT&quot;, &quot;current_value&quot;: 3.5, &quot;baseline_value&quot;: 4.27, &quot;abs_change&quot;: -0.7699999999999996, &quot;pct_change&quot;: -0.18032786885245894, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 15.399999999999991, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 16.0, &quot;hypothesis&quot;: &quot;Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;United Kingdom&quot;, &quot;country_code&quot;: &quot;UK&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 1.0, &quot;abs_change&quot;: -0.14290000000000003, &quot;pct_change&quot;: -0.14290000000000003, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 14.290000000000003, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 16.0, &quot;hypothesis&quot;: &quot;Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Payment issue&quot;, &quot;contact_reason_id&quot;: &quot;payment_issue&quot;, &quot;metric&quot;: &quot;avg_csat&quot;, &quot;metric_label&quot;: &quot;CSAT&quot;, &quot;current_value&quot;: 3.33, &quot;baseline_value&quot;: 4.0, &quot;abs_change&quot;: -0.6699999999999999, &quot;pct_change&quot;: -0.16749999999999998, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 13.399999999999999, &quot;csat_responses&quot;: 3.0, &quot;contact_volume&quot;: 9.0, &quot;hypothesis&quot;: &quot;Customer sentiment weakened. Validate response count, complaint themes, and whether FCR or AHT also deteriorated.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8214, &quot;baseline_value&quot;: 0.9378, &quot;abs_change&quot;: -0.11639999999999995, &quot;pct_change&quot;: -0.12412028150991677, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 11.639999999999995, &quot;csat_responses&quot;: 14.0, &quot;contact_volume&quot;: 30.0, &quot;hypothesis&quot;: &quot;Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Poland&quot;, &quot;country_code&quot;: &quot;PL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.7273, &quot;baseline_value&quot;: 0.840475, &quot;abs_change&quot;: -0.11317500000000003, &quot;pct_change&quot;: -0.13465599809631462, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 11.317500000000003, &quot;csat_responses&quot;: 6.0, &quot;contact_volume&quot;: 23.0, &quot;hypothesis&quot;: &quot;Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Payment issue&quot;, &quot;contact_reason_id&quot;: &quot;payment_issue&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 0.964275, &quot;abs_change&quot;: -0.10717500000000002, &quot;pct_change&quot;: -0.11114567939643775, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 10.717500000000001, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 8.0, &quot;hypothesis&quot;: &quot;Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Austria&quot;, &quot;country_code&quot;: &quot;AT&quot;, &quot;contact_reason_name&quot;: &quot;Refund request&quot;, &quot;contact_reason_id&quot;: &quot;refund_request&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8, &quot;baseline_value&quot;: 0.901775, &quot;abs_change&quot;: -0.10177499999999995, &quot;pct_change&quot;: -0.11286074686035868, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 10.177499999999995, &quot;csat_responses&quot;: 3.0, &quot;contact_volume&quot;: 7.0, &quot;hypothesis&quot;: &quot;Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;United Kingdom&quot;, &quot;country_code&quot;: &quot;UK&quot;, &quot;contact_reason_name&quot;: &quot;Account issue&quot;, &quot;contact_reason_id&quot;: &quot;account_issue&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 0.958325, &quot;abs_change&quot;: -0.10122500000000001, &quot;pct_change&quot;: -0.10562700545222134, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;impact_score&quot;: 10.1225, &quot;csat_responses&quot;: 0, &quot;contact_volume&quot;: 8.0, &quot;hypothesis&quot;: &quot;Resolution quality weakened. Validate reopen reasons, policy ambiguity, and agent coaching opportunities.&quot;}]}</script>
+  <script type="application/json" id="dashboard-data">{&quot;latest_week&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: [&quot;2026-03-23&quot;, &quot;2026-03-30&quot;, &quot;2026-04-06&quot;, &quot;2026-04-13&quot;], &quot;top_signals&quot;: [{&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8462, &quot;baseline_value&quot;: 0.8930750000000001, &quot;abs_change&quot;: -0.04687500000000011, &quot;pct_change&quot;: -0.05248719312487765, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 4.687500000000011, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 5.0, &quot;contact_volume&quot;: 41.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 216.41, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8214, &quot;baseline_value&quot;: 0.9378, &quot;abs_change&quot;: -0.11639999999999995, &quot;pct_change&quot;: -0.12412028150991677, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 11.639999999999995, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 14.0, &quot;contact_volume&quot;: 30.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 123.39, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Poland&quot;, &quot;country_code&quot;: &quot;PL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.7273, &quot;baseline_value&quot;: 0.840475, &quot;abs_change&quot;: -0.11317500000000003, &quot;pct_change&quot;: -0.13465599809631462, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 11.317500000000003, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 6.0, &quot;contact_volume&quot;: 23.0, &quot;total_orders&quot;: 554.0, &quot;compensation_cost&quot;: 61.39, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Austria&quot;, &quot;country_code&quot;: &quot;AT&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8462, &quot;baseline_value&quot;: 0.91445, &quot;abs_change&quot;: -0.06825000000000003, &quot;pct_change&quot;: -0.07463502651867246, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 6.825000000000003, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 7.0, &quot;contact_volume&quot;: 13.0, &quot;total_orders&quot;: 393.0, &quot;compensation_cost&quot;: 70.83, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8889, &quot;baseline_value&quot;: 0.9546250000000001, &quot;abs_change&quot;: -0.06572500000000003, &quot;pct_change&quot;: -0.06884902448605476, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 6.572500000000003, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 12.0, &quot;contact_volume&quot;: 19.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Missing item&quot;, &quot;contact_reason_id&quot;: &quot;missing_item&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8824, &quot;baseline_value&quot;: 0.9625, &quot;abs_change&quot;: -0.08010000000000006, &quot;pct_change&quot;: -0.08322077922077928, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 8.010000000000005, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 18.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 26.28, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Payment issue&quot;, &quot;contact_reason_id&quot;: &quot;payment_issue&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 0.964275, &quot;abs_change&quot;: -0.10717500000000002, &quot;pct_change&quot;: -0.11114567939643775, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 10.717500000000001, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 8.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;United Kingdom&quot;, &quot;country_code&quot;: &quot;UK&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 1.0, &quot;abs_change&quot;: -0.14290000000000003, &quot;pct_change&quot;: -0.14290000000000003, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 14.290000000000003, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 16.0, &quot;total_orders&quot;: 869.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;United Kingdom&quot;, &quot;country_code&quot;: &quot;UK&quot;, &quot;contact_reason_name&quot;: &quot;Account issue&quot;, &quot;contact_reason_id&quot;: &quot;account_issue&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 0.958325, &quot;abs_change&quot;: -0.10122500000000001, &quot;pct_change&quot;: -0.10562700545222134, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 10.1225, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 63.164400000000015, &quot;impact_score_raw&quot;: 97.17600000000002, &quot;csat_responses&quot;: 0, &quot;contact_volume&quot;: 8.0, &quot;total_orders&quot;: 869.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Austria&quot;, &quot;country_code&quot;: &quot;AT&quot;, &quot;contact_reason_name&quot;: &quot;Refund request&quot;, &quot;contact_reason_id&quot;: &quot;refund_request&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8, &quot;baseline_value&quot;: 0.901775, &quot;abs_change&quot;: -0.10177499999999995, &quot;pct_change&quot;: -0.11286074686035868, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 10.177499999999995, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 55.56914999999997, &quot;impact_score_raw&quot;: 85.49099999999996, &quot;csat_responses&quot;: 3.0, &quot;contact_volume&quot;: 7.0, &quot;total_orders&quot;: 393.0, &quot;compensation_cost&quot;: 73.94, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}]}</script>
 </body>
 </html>
