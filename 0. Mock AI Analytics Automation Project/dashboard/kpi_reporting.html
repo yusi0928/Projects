@@ -3,82 +3,219 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Analytics KPI Reporting Dashboard</title>
+  <title>AI Analytics Weekly KPI Performance Overview</title>
   <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #dbe3ef;
+      --soft: #f8fafc;
+      --good: #166534;
+      --bad: #991b1b;
+      --warn: #92400e;
+      --blue: #2563eb;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; color: #0f172a; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; }
-    header { padding: 28px clamp(18px, 4vw, 56px) 18px; border-bottom: 1px solid #dbe3ef; }
+    body { margin: 0; color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; }
+    header { padding: 28px clamp(18px, 4vw, 56px) 18px; border-bottom: 1px solid var(--line); }
     nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-    nav a { color: #0f172a; text-decoration: none; border: 1px solid #dbe3ef; border-radius: 6px; padding: 7px 10px; }
-    nav a.active { color: #fff; background: #0f172a; border-color: #0f172a; }
+    nav a { color: var(--ink); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }
+    nav a.active { color: #fff; background: var(--ink); border-color: var(--ink); }
     h1 { margin: 0; font-size: clamp(26px, 4vw, 42px); letter-spacing: 0; }
-    header p, .note { color: #475569; line-height: 1.55; max-width: 900px; }
+    header p, .note { color: var(--muted); line-height: 1.55; max-width: 940px; }
     main { padding: 24px clamp(18px, 4vw, 56px) 48px; }
-    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; color: #475569; font-size: 14px; }
-    .meta span { border: 1px solid #dbe3ef; border-radius: 6px; padding: 6px 9px; background: #f8fafc; }
-    .kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
-    .kpi { border: 1px solid #dbe3ef; border-radius: 8px; padding: 14px; min-height: 110px; }
-    .kpi span { color: #475569; font-size: 13px; }
-    .kpi strong { display: block; margin-top: 10px; font-size: 26px; letter-spacing: 0; }
-    .kpi small { display: block; margin-top: 8px; color: #475569; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; color: var(--muted); font-size: 14px; }
+    .meta span { border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; background: var(--soft); }
+    .section-title { margin: 26px 0 12px; font-size: 20px; }
+    .theme-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 22px; }
+    .theme-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff; min-height: 132px; }
+    .theme-card span { color: var(--muted); font-size: 12px; }
+    .theme-card h2 { margin: 4px 0 10px; font-size: 17px; }
+    .theme-card p { color: var(--muted); line-height: 1.4; margin: 10px 0 0; font-size: 13px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .kpi-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; min-height: 174px; }
+    .kpi-card.good { border-top: 4px solid #16a34a; }
+    .kpi-card.bad { border-top: 4px solid #dc2626; }
+    .kpi-card.neutral { border-top: 4px solid #94a3b8; }
+    .kpi-head { display: flex; align-items: start; justify-content: space-between; gap: 8px; }
+    .kpi-head span { color: var(--muted); font-size: 13px; }
+    .kpi-card strong { display: block; margin-top: 10px; font-size: 25px; letter-spacing: 0; }
+    .compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+    .compare-grid div { background: var(--soft); border-radius: 6px; padding: 8px; }
+    .compare-grid small { display: block; color: var(--muted); font-size: 11px; }
+    .compare-grid b { display: block; margin-top: 3px; font-size: 13px; }
     .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .panel { border: 1px solid #dbe3ef; border-radius: 8px; padding: 16px; overflow: hidden; }
+    .panel { border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow: hidden; }
     .wide { grid-column: 1 / -1; }
-    .panel-heading span { color: #2563eb; font-weight: 700; font-size: 12px; text-transform: uppercase; }
+    .panel-heading span { color: var(--blue); font-weight: 700; font-size: 12px; text-transform: uppercase; }
     .panel-heading h2 { margin: 3px 0 12px; font-size: 18px; letter-spacing: 0; }
+    .trend-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .trend-panel svg { max-height: 240px; }
     svg { width: 100%; height: auto; display: block; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 10px 8px; border-bottom: 1px solid #dbe3ef; text-align: left; vertical-align: top; }
-    th { color: #475569; font-size: 12px; text-transform: uppercase; }
-    @media (max-width: 900px) { .kpi-grid, .grid { grid-template-columns: 1fr; } }
+    th, td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
+    .badge { display: inline-flex; white-space: nowrap; border-radius: 999px; padding: 3px 8px; font-size: 12px; border: 1px solid var(--line); }
+    .badge.good { color: var(--good); border-color: #bbf7d0; background: #f0fdf4; }
+    .badge.bad { color: var(--bad); border-color: #fecaca; background: #fff1f2; }
+    .badge.neutral { color: #334155; background: var(--soft); }
+    @media (max-width: 1100px) { .theme-grid, .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 900px) { .theme-grid, .kpi-grid, .grid, .trend-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <header>
-    <nav><a class="active" href="kpi_reporting.html">KPI Reporting Dashboard</a><a class="" href="index.html">Weekly Diagnostics Dashboard</a><a class="" href="kpi_governance.html">KPI Governance Page</a></nav>
-    <h1>KPI Reporting Dashboard</h1>
-    <p>Answers: how is customer support performance trending? This is the standard reporting view from the governed KPI mart, separate from anomaly investigation.</p>
+    <nav><a class="active" href="kpi_reporting.html">Weekly KPI Performance Overview</a><a class="" href="index.html">Weekly Diagnostics Dashboard</a><a class="" href="kpi_governance.html">KPI Governance Page</a></nav>
+    <h1>Weekly KPI Performance Overview</h1>
+    <p>This week, support demand increased versus the four-week baseline while efficiency remained stable. FCR declined versus baseline, CSAT remained broadly stable, and compensation cost remained within the expected range.</p>
     <div class="meta">
       <span>Latest week: 2026-04-20</span>
+      <span>Previous week: 2026-04-13</span>
+      <span>Baseline: 2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13</span>
       <span>Source: data/marts/mart_weekly_cs_kpi_by_country_reason.csv</span>
       <span>Synthetic/mock portfolio project. No real customer, employee, financial, employer, or proprietary company data is used.</span>
     </div>
   </header>
   <main>
-    <section class="kpi-grid">
-            <section class="kpi">
-              <span>Contact volume</span>
-              <strong>354</strong>
-              <small>Context-dependent is favorable</small>
+    <h2 class="section-title">Executive summary</h2>
+    <section class="theme-grid">
+            <section class="theme-card good">
+              <div><span>Overall support demand</span><h2>Demand</h2></div>
+              <span class="badge good">Good</span>
+              <p>Contact volume +0.8% · Contact rate -0.3 pp vs 4-week baseline</p>
             </section>
-            <section class="kpi">
-              <span>Contact rate</span>
-              <strong>10.1%</strong>
-              <small>Lower is favorable</small>
+            <section class="theme-card good">
+              <div><span>Handling time and backlog</span><h2>Efficiency</h2></div>
+              <span class="badge good">Good</span>
+              <p>AHT -7.2% · Backlog -3.1% vs 4-week baseline</p>
             </section>
-            <section class="kpi">
-              <span>AHT</span>
-              <strong>7.6 min</strong>
-              <small>Lower is favorable</small>
+            <section class="theme-card bad">
+              <div><span>Resolution quality and sentiment</span><h2>Customer experience</h2></div>
+              <span class="badge bad">Needs attention</span>
+              <p>FCR -2.8 pp · CSAT +0.12 vs 4-week baseline</p>
             </section>
-            <section class="kpi">
-              <span>FCR</span>
-              <strong>89.7%</strong>
-              <small>Higher is favorable</small>
+            <section class="theme-card good">
+              <div><span>Customer appeasement cost</span><h2>Cost / compensation</h2></div>
+              <span class="badge good">Good</span>
+              <p>Compensation cost -17.3% vs 4-week baseline</p>
             </section>
-            <section class="kpi">
-              <span>CSAT</span>
-              <strong>4.11</strong>
-              <small>Higher is favorable</small>
-            </section>
-            <section class="kpi">
-              <span>Compensation cost</span>
-              <strong>EUR 996</strong>
-              <small>Lower is favorable</small>
+            <section class="theme-card neutral">
+              <div><span>Order-level risk</span><h2>Operational risk</h2></div>
+              <span class="badge neutral">Stable</span>
+              <p>Cancellation rate -0.1 pp vs 4-week baseline</p>
             </section></section>
-    <section class="grid">
+
+    <h2 class="section-title">Main KPI cards</h2>
+    <section class="kpi-grid">
+            <section class="kpi-card neutral">
+              <div class="kpi-head">
+                <span>Contact volume</span>
+                <span class="badge neutral">Stable</span>
+              </div>
+              <strong>354</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>401</b></div>
+                <div><small>WoW</small><b>&darr; -11.7%</b></div>
+                <div><small>4-week avg</small><b>351</b></div>
+                <div><small>Vs baseline</small><b>&uarr; +0.8%</b></div>
+              </div>
+            </section>
+            <section class="kpi-card good">
+              <div class="kpi-head">
+                <span>Contact rate</span>
+                <span class="badge good">Good</span>
+              </div>
+              <strong>10.1%</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>11.6%</b></div>
+                <div><small>WoW</small><b>&darr; -1.5 pp</b></div>
+                <div><small>4-week avg</small><b>10.4%</b></div>
+                <div><small>Vs baseline</small><b>&darr; -0.3 pp</b></div>
+              </div>
+            </section>
+            <section class="kpi-card good">
+              <div class="kpi-head">
+                <span>AHT</span>
+                <span class="badge good">Good</span>
+              </div>
+              <strong>7.6 min</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>7.6 min</b></div>
+                <div><small>WoW</small><b>&darr; -0.1%</b></div>
+                <div><small>4-week avg</small><b>8.2 min</b></div>
+                <div><small>Vs baseline</small><b>&darr; -7.2%</b></div>
+              </div>
+            </section>
+            <section class="kpi-card good">
+              <div class="kpi-head">
+                <span>Backlog</span>
+                <span class="badge good">Good</span>
+              </div>
+              <strong>123</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>152</b></div>
+                <div><small>WoW</small><b>&darr; -19.1%</b></div>
+                <div><small>4-week avg</small><b>127</b></div>
+                <div><small>Vs baseline</small><b>&darr; -3.1%</b></div>
+              </div>
+            </section>
+            <section class="kpi-card bad">
+              <div class="kpi-head">
+                <span>FCR</span>
+                <span class="badge bad">Needs attention</span>
+              </div>
+              <strong>89.7%</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>95.4%</b></div>
+                <div><small>WoW</small><b>&darr; -5.7 pp</b></div>
+                <div><small>4-week avg</small><b>92.5%</b></div>
+                <div><small>Vs baseline</small><b>&darr; -2.8 pp</b></div>
+              </div>
+            </section>
+            <section class="kpi-card good">
+              <div class="kpi-head">
+                <span>CSAT</span>
+                <span class="badge good">Good</span>
+              </div>
+              <strong>4.11</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>4.00</b></div>
+                <div><small>WoW</small><b>&uarr; +0.11</b></div>
+                <div><small>4-week avg</small><b>3.99</b></div>
+                <div><small>Vs baseline</small><b>&uarr; +0.12</b></div>
+              </div>
+            </section>
+            <section class="kpi-card good">
+              <div class="kpi-head">
+                <span>Compensation cost</span>
+                <span class="badge good">Good</span>
+              </div>
+              <strong>EUR 996</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>EUR 953</b></div>
+                <div><small>WoW</small><b>&uarr; +4.5%</b></div>
+                <div><small>4-week avg</small><b>EUR 1,204</b></div>
+                <div><small>Vs baseline</small><b>&darr; -17.3%</b></div>
+              </div>
+            </section>
+            <section class="kpi-card neutral">
+              <div class="kpi-head">
+                <span>Cancellation rate</span>
+                <span class="badge neutral">Stable</span>
+              </div>
+              <strong>4.4%</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>4.1%</b></div>
+                <div><small>WoW</small><b>&uarr; +0.3 pp</b></div>
+                <div><small>4-week avg</small><b>4.4%</b></div>
+                <div><small>Vs baseline</small><b>&darr; -0.1 pp</b></div>
+              </div>
+            </section></section>
+
+    <h2 class="section-title">KPI trend overview</h2>
+    <section class="trend-grid">
       
-            <section class="panel">
+            <section class="panel trend-panel">
               <div class="panel-heading"><span>KPI trend</span><h2>Contact volume</h2></div>
               
 <svg viewBox="0 0 760 280" role="img" aria-label="Contact volume trend">
@@ -105,7 +242,7 @@
   <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
 </svg>
             </section>
-            <section class="panel">
+            <section class="panel trend-panel">
               <div class="panel-heading"><span>KPI trend</span><h2>Contact rate</h2></div>
               
 <svg viewBox="0 0 760 280" role="img" aria-label="Contact rate trend">
@@ -132,7 +269,7 @@
   <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
 </svg>
             </section>
-            <section class="panel">
+            <section class="panel trend-panel">
               <div class="panel-heading"><span>KPI trend</span><h2>AHT</h2></div>
               
 <svg viewBox="0 0 760 280" role="img" aria-label="AHT trend">
@@ -159,7 +296,7 @@
   <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
 </svg>
             </section>
-            <section class="panel">
+            <section class="panel trend-panel">
               <div class="panel-heading"><span>KPI trend</span><h2>FCR</h2></div>
               
 <svg viewBox="0 0 760 280" role="img" aria-label="FCR trend">
@@ -186,7 +323,7 @@
   <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
 </svg>
             </section>
-            <section class="panel">
+            <section class="panel trend-panel">
               <div class="panel-heading"><span>KPI trend</span><h2>CSAT</h2></div>
               
 <svg viewBox="0 0 760 280" role="img" aria-label="CSAT trend">
@@ -213,7 +350,7 @@
   <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
 </svg>
             </section>
-            <section class="panel">
+            <section class="panel trend-panel">
               <div class="panel-heading"><span>KPI trend</span><h2>Compensation cost</h2></div>
               
 <svg viewBox="0 0 760 280" role="img" aria-label="Compensation cost trend">
@@ -240,104 +377,229 @@
   <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
 </svg>
             </section>
+            <section class="panel trend-panel">
+              <div class="panel-heading"><span>KPI trend</span><h2>Cancellation rate</h2></div>
+              
+<svg viewBox="0 0 760 280" role="img" aria-label="Cancellation rate trend">
+  <rect width="760" height="280" fill="#ffffff" />
+  <line x1="64" y1="234.0" x2="736" y2="234.0" stroke="#e5e7eb" /><text x="54" y="238.0" text-anchor="end" font-size="11" fill="#475569">4.0%</text><line x1="64" y1="181.5" x2="736" y2="181.5" stroke="#e5e7eb" /><text x="54" y="185.5" text-anchor="end" font-size="11" fill="#475569">4.4%</text><line x1="64" y1="129.0" x2="736" y2="129.0" stroke="#e5e7eb" /><text x="54" y="133.0" text-anchor="end" font-size="11" fill="#475569">4.9%</text><line x1="64" y1="76.5" x2="736" y2="76.5" stroke="#e5e7eb" /><text x="54" y="80.5" text-anchor="end" font-size="11" fill="#475569">5.3%</text><line x1="64" y1="24.0" x2="736" y2="24.0" stroke="#e5e7eb" /><text x="54" y="28.0" text-anchor="end" font-size="11" fill="#475569">5.7%</text>
+  <polyline points="64.0,234.0 108.8,155.4 153.6,230.3 198.4,199.4 243.2,102.9 288.0,198.2 332.8,187.2 377.6,196.5 422.4,199.2 467.2,47.6 512.0,24.0 556.8,128.6 601.6,214.0 646.4,158.2 691.2,223.5 736.0,188.1" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="64.0" cy="234.0" r="3.5" fill="#2563eb" />
+<circle cx="108.8" cy="155.4" r="3.5" fill="#2563eb" />
+<circle cx="153.6" cy="230.3" r="3.5" fill="#2563eb" />
+<circle cx="198.4" cy="199.4" r="3.5" fill="#2563eb" />
+<circle cx="243.2" cy="102.9" r="3.5" fill="#2563eb" />
+<circle cx="288.0" cy="198.2" r="3.5" fill="#2563eb" />
+<circle cx="332.8" cy="187.2" r="3.5" fill="#2563eb" />
+<circle cx="377.6" cy="196.5" r="3.5" fill="#2563eb" />
+<circle cx="422.4" cy="199.2" r="3.5" fill="#2563eb" />
+<circle cx="467.2" cy="47.6" r="3.5" fill="#2563eb" />
+<circle cx="512.0" cy="24.0" r="3.5" fill="#2563eb" />
+<circle cx="556.8" cy="128.6" r="3.5" fill="#2563eb" />
+<circle cx="601.6" cy="214.0" r="3.5" fill="#2563eb" />
+<circle cx="646.4" cy="158.2" r="3.5" fill="#2563eb" />
+<circle cx="691.2" cy="223.5" r="3.5" fill="#2563eb" />
+<circle cx="736.0" cy="188.1" r="3.5" fill="#2563eb" />
+  <line x1="64" y1="234" x2="736" y2="234" stroke="#94a3b8" />
+  <text x="64.0" y="264" text-anchor="middle" font-size="11" fill="#475569">01-05</text><text x="243.2" y="264" text-anchor="middle" font-size="11" fill="#475569">02-02</text><text x="422.4" y="264" text-anchor="middle" font-size="11" fill="#475569">03-02</text><text x="601.6" y="264" text-anchor="middle" font-size="11" fill="#475569">03-30</text><text x="736.0" y="264" text-anchor="middle" font-size="11" fill="#475569">04-20</text>
+</svg>
+            </section>
+    </section>
+
+    <section class="grid">
       <section class="panel wide">
         <div class="panel-heading"><span>Country breakdown</span><h2>Latest week by country</h2></div>
-        <table><thead><tr><th>Country</th><th>Contacts</th><th>Contact rate</th><th>AHT</th><th>FCR</th><th>CSAT</th></tr></thead><tbody>
+        <table><thead><tr><th>Country</th><th>Contacts</th><th>Contact rate</th><th>FCR</th><th>CSAT</th><th>Compensation</th><th>Status</th></tr></thead><tbody>
             <tr>
               <td>Germany</td>
               <td>97</td>
               <td>9.7%</td>
-              <td>7.8 min</td>
               <td>86.9%</td>
               <td>4.10</td>
+              <td>EUR 297</td>
+              <td><span class="badge bad">Needs attention</span></td>
             </tr>
             <tr>
               <td>Netherlands</td>
               <td>78</td>
               <td>11.3%</td>
-              <td>7.8 min</td>
               <td>90.4%</td>
               <td>4.28</td>
+              <td>EUR 232</td>
+              <td><span class="badge neutral">Stable</span></td>
             </tr>
             <tr>
               <td>United Kingdom</td>
               <td>72</td>
               <td>8.3%</td>
-              <td>7.6 min</td>
               <td>92.1%</td>
               <td>4.00</td>
+              <td>EUR 146</td>
+              <td><span class="badge good">Good</span></td>
             </tr>
             <tr>
               <td>Poland</td>
               <td>66</td>
               <td>11.9%</td>
-              <td>7.2 min</td>
               <td>90.5%</td>
               <td>4.25</td>
+              <td>EUR 175</td>
+              <td><span class="badge neutral">Stable</span></td>
             </tr>
             <tr>
               <td>Austria</td>
               <td>41</td>
               <td>10.4%</td>
-              <td>7.5 min</td>
               <td>89.3%</td>
               <td>3.89</td>
+              <td>EUR 145</td>
+              <td><span class="badge neutral">Stable</span></td>
             </tr></tbody></table>
       </section>
       <section class="panel wide">
         <div class="panel-heading"><span>Contact reason breakdown</span><h2>Latest week by reason</h2></div>
-        <table><thead><tr><th>Reason</th><th>Contacts</th><th>Contact rate</th><th>AHT</th><th>FCR</th><th>Compensation</th></tr></thead><tbody>
+        <table><thead><tr><th>Reason</th><th>Contacts</th><th>AHT</th><th>FCR</th><th>CSAT</th><th>Compensation</th><th>Status</th></tr></thead><tbody>
             <tr>
               <td>Late delivery</td>
               <td>128</td>
-              <td>3.6%</td>
               <td>7.6 min</td>
               <td>83.5%</td>
+              <td>4.10</td>
               <td>EUR 544</td>
+              <td><span class="badge neutral">Stable</span></td>
             </tr>
             <tr>
               <td>Cancellation</td>
               <td>75</td>
-              <td>2.1%</td>
               <td>5.8 min</td>
               <td>92.8%</td>
+              <td>4.00</td>
               <td>EUR 0</td>
+              <td><span class="badge good">Good</span></td>
             </tr>
             <tr>
               <td>Missing item</td>
               <td>50</td>
-              <td>1.4%</td>
               <td>7.2 min</td>
               <td>93.8%</td>
+              <td>4.36</td>
               <td>EUR 84</td>
+              <td><span class="badge good">Good</span></td>
             </tr>
             <tr>
               <td>Refund request</td>
               <td>45</td>
-              <td>1.3%</td>
               <td>9.3 min</td>
               <td>89.7%</td>
+              <td>4.18</td>
               <td>EUR 368</td>
+              <td><span class="badge neutral">Stable</span></td>
             </tr>
             <tr>
               <td>Payment issue</td>
               <td>32</td>
-              <td>0.9%</td>
               <td>9.5 min</td>
               <td>96.4%</td>
+              <td>4.07</td>
               <td>EUR 0</td>
+              <td><span class="badge neutral">Stable</span></td>
             </tr>
             <tr>
               <td>Account issue</td>
               <td>24</td>
-              <td>0.7%</td>
               <td>8.3 min</td>
               <td>95.2%</td>
+              <td>3.50</td>
               <td>EUR 0</td>
+              <td><span class="badge neutral">Stable</span></td>
+            </tr></tbody></table>
+      </section>
+      <section class="panel wide">
+        <div class="panel-heading"><span>KPI movement summary</span><h2>Latest week vs previous week and four-week baseline</h2></div>
+        <table><thead><tr><th>KPI</th><th>Latest week</th><th>Previous week</th><th>WoW change</th><th>4-week avg</th><th>Vs baseline</th><th>Status</th><th>Business interpretation</th></tr></thead><tbody>
+            <tr>
+              <td>Contact volume</td>
+              <td>354</td>
+              <td>401</td>
+              <td>&darr; -11.7%</td>
+              <td>351</td>
+              <td>&uarr; +0.8%</td>
+              <td><span class="badge neutral">Stable</span></td>
+              <td>Support demand is above baseline.</td>
+            </tr>
+            <tr>
+              <td>Contact rate</td>
+              <td>10.1%</td>
+              <td>11.6%</td>
+              <td>&darr; -1.5 pp</td>
+              <td>10.4%</td>
+              <td>&darr; -0.3 pp</td>
+              <td><span class="badge good">Good</span></td>
+              <td>Contact demand is controlled relative to orders.</td>
+            </tr>
+            <tr>
+              <td>AHT</td>
+              <td>7.6 min</td>
+              <td>7.6 min</td>
+              <td>&darr; -0.1%</td>
+              <td>8.2 min</td>
+              <td>&darr; -7.2%</td>
+              <td><span class="badge good">Good</span></td>
+              <td>Handling efficiency is stable or improving.</td>
+            </tr>
+            <tr>
+              <td>Backlog</td>
+              <td>123</td>
+              <td>152</td>
+              <td>&darr; -19.1%</td>
+              <td>127</td>
+              <td>&darr; -3.1%</td>
+              <td><span class="badge good">Good</span></td>
+              <td>Backlog remains manageable.</td>
+            </tr>
+            <tr>
+              <td>FCR</td>
+              <td>89.7%</td>
+              <td>95.4%</td>
+              <td>&darr; -5.7 pp</td>
+              <td>92.5%</td>
+              <td>&darr; -2.8 pp</td>
+              <td><span class="badge bad">Needs attention</span></td>
+              <td>Resolution quality declined versus baseline.</td>
+            </tr>
+            <tr>
+              <td>CSAT</td>
+              <td>4.11</td>
+              <td>4.00</td>
+              <td>&uarr; +0.11</td>
+              <td>3.99</td>
+              <td>&uarr; +0.12</td>
+              <td><span class="badge good">Good</span></td>
+              <td>Customer sentiment is stable or improving.</td>
+            </tr>
+            <tr>
+              <td>Compensation cost</td>
+              <td>EUR 996</td>
+              <td>EUR 953</td>
+              <td>&uarr; +4.5%</td>
+              <td>EUR 1,204</td>
+              <td>&darr; -17.3%</td>
+              <td><span class="badge good">Good</span></td>
+              <td>Compensation cost is within expected range.</td>
+            </tr>
+            <tr>
+              <td>Cancellation rate</td>
+              <td>4.4%</td>
+              <td>4.1%</td>
+              <td>&uarr; +0.3 pp</td>
+              <td>4.4%</td>
+              <td>&darr; -0.1 pp</td>
+              <td><span class="badge neutral">Stable</span></td>
+              <td>Cancellation risk is stable or improving.</td>
             </tr></tbody></table>
       </section>
       <section class="panel wide note">
-        <strong>Business interpretation notes.</strong> Use this page for recurring KPI reporting. For exception triage, use the Weekly Diagnostics Dashboard. Order-based metrics such as cancellation rate and contact rate require grain awareness because order volume is repeated across reason-level rows.
+        <strong>Reporting note.</strong> This page is an overall weekly performance view: KPI health, period-over-period movement, country and reason overview. For anomaly ranking, confidence, business impact, analyst validation, and escalation recommendations, use the Weekly Diagnostics Dashboard.
       </section>
     </section>
   </main>

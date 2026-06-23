@@ -844,7 +844,7 @@ def write_report(summary):
 
 def nav_html(active):
     links = [
-        ("reporting", "KPI Reporting Dashboard", "kpi_reporting.html"),
+        ("reporting", "Weekly KPI Performance Overview", "kpi_reporting.html"),
         ("diagnostics", "Weekly Diagnostics Dashboard", "index.html"),
         ("governance", "KPI Governance Page", "kpi_governance.html"),
     ]
@@ -858,6 +858,176 @@ def disclaimer_html():
     return (
         "Synthetic/mock portfolio project. No real customer, employee, financial, "
         "employer, or proprietary company data is used."
+    )
+
+
+def reporting_delta(metric, current, comparison):
+    if current is None or comparison is None:
+        return None, None
+    abs_change = current - comparison
+    pct_change = abs_change / comparison if comparison else None
+    return abs_change, pct_change
+
+
+def is_neutral_movement(metric, abs_change, pct_change):
+    if abs_change is None:
+        return True
+    if metric in RATE_METRICS:
+        return abs(abs_change) < 0.003
+    if metric == "avg_csat":
+        return abs(abs_change) < 0.05
+    if metric == "avg_aht_minutes":
+        return abs(abs_change) < 0.15
+    return abs(pct_change or 0) < 0.03
+
+
+def movement_status(metric, abs_change, pct_change):
+    if is_neutral_movement(metric, abs_change, pct_change):
+        return "neutral"
+    movement = direction(metric, abs_change)
+    if movement == "better":
+        return "good"
+    if movement == "worse":
+        return "bad"
+    return "neutral"
+
+
+def status_label(status):
+    return {"good": "Good", "bad": "Needs attention", "neutral": "Stable"}.get(status, "Stable")
+
+
+def arrow_entity(abs_change):
+    if abs_change is None or abs(abs_change) < 0.00001:
+        return "&rarr;"
+    return "&uarr;" if abs_change > 0 else "&darr;"
+
+
+def format_reporting_change(metric, abs_change, pct_change):
+    if abs_change is None:
+        return "n/a"
+    if metric in RATE_METRICS:
+        return f"{abs_change * 100:+.1f} pp"
+    if metric == "avg_csat":
+        return f"{abs_change:+.2f}"
+    if metric == "avg_aht_minutes":
+        return f"{pct_change:+.1%}" if pct_change is not None else f"{abs_change:+.1f} min"
+    if metric in {"contact_volume", "backlog_end_of_week", "compensation_cost"}:
+        return f"{pct_change:+.1%}" if pct_change is not None else f"{abs_change:+,.0f}"
+    return format_change(metric, abs_change, pct_change)
+
+
+def reporting_interpretation(metric, status, baseline_change):
+    if metric == "contact_volume":
+        return "Support demand is above baseline." if baseline_change > 0 else "Support demand is below baseline."
+    if metric == "contact_rate":
+        return "Support demand rose relative to orders." if status == "bad" else "Contact demand is controlled relative to orders."
+    if metric == "avg_aht_minutes":
+        return "Efficiency weakened versus baseline." if status == "bad" else "Handling efficiency is stable or improving."
+    if metric == "backlog_end_of_week":
+        return "Backlog risk needs monitoring." if status == "bad" else "Backlog remains manageable."
+    if metric == "fcr_rate":
+        return "Resolution quality declined versus baseline." if status == "bad" else "Resolution quality is stable or improving."
+    if metric == "avg_csat":
+        return "Customer sentiment softened; interpret with response volume." if status == "bad" else "Customer sentiment is stable or improving."
+    if metric == "compensation_cost":
+        return "Cost exposure increased versus baseline." if status == "bad" else "Compensation cost is within expected range."
+    if metric == "cancellation_rate":
+        return "Order-level risk increased versus baseline." if status == "bad" else "Cancellation risk is stable or improving."
+    return "Monitor against the next weekly refresh."
+
+
+def build_reporting_comparisons(summary):
+    weekly_series = summary["weekly_series"]
+    latest = weekly_series[-1]
+    previous = weekly_series[-2]
+    baseline_weeks = set(summary["baseline_weeks"])
+    baseline_rows = [row for row in weekly_series if row["week_start"] in baseline_weeks]
+    baseline = {metric: mean(row.get(metric) for row in baseline_rows) for metric in METRICS}
+    comparisons = []
+    for metric in [
+        "contact_volume",
+        "contact_rate",
+        "avg_aht_minutes",
+        "backlog_end_of_week",
+        "fcr_rate",
+        "avg_csat",
+        "compensation_cost",
+        "cancellation_rate",
+    ]:
+        current = latest.get(metric)
+        previous_value = previous.get(metric)
+        baseline_value = baseline.get(metric)
+        wow_abs, wow_pct = reporting_delta(metric, current, previous_value)
+        base_abs, base_pct = reporting_delta(metric, current, baseline_value)
+        base_status = movement_status(metric, base_abs, base_pct)
+        comparisons.append(
+            {
+                "metric": metric,
+                "metric_label": METRIC_LABELS[metric],
+                "latest_value": current,
+                "previous_value": previous_value,
+                "baseline_value": baseline_value,
+                "wow_abs": wow_abs,
+                "wow_pct": wow_pct,
+                "baseline_abs": base_abs,
+                "baseline_pct": base_pct,
+                "wow_status": movement_status(metric, wow_abs, wow_pct),
+                "baseline_status": base_status,
+                "interpretation": reporting_interpretation(metric, base_status, base_abs or 0),
+            }
+        )
+    return comparisons
+
+
+def comparison_by_metric(comparisons):
+    return {item["metric"]: item for item in comparisons}
+
+
+def status_badge(status):
+    return f'<span class="badge {escape(status)}">{escape(status_label(status))}</span>'
+
+
+def segment_status(row):
+    risk = 0
+    if row.get("fcr_rate") is not None and row["fcr_rate"] < 0.88:
+        risk += 1
+    if row.get("avg_csat") is not None and row["avg_csat"] < 3.8:
+        risk += 1
+    if row.get("contact_rate") is not None and row["contact_rate"] > 0.09:
+        risk += 1
+    if row.get("avg_aht_minutes") is not None and row["avg_aht_minutes"] > 8.5:
+        risk += 1
+    if risk >= 2:
+        return "bad"
+    if risk == 1:
+        return "neutral"
+    return "good"
+
+
+def theme_status(metrics, comparison_lookup):
+    statuses = [comparison_lookup[m]["baseline_status"] for m in metrics]
+    if "bad" in statuses:
+        return "bad"
+    if statuses.count("good") >= 1:
+        return "good"
+    return "neutral"
+
+
+def reporting_narrative(comparison_lookup):
+    contact_volume = comparison_lookup["contact_volume"]
+    aht = comparison_lookup["avg_aht_minutes"]
+    fcr = comparison_lookup["fcr_rate"]
+    csat = comparison_lookup["avg_csat"]
+    compensation = comparison_lookup["compensation_cost"]
+
+    demand = "increased" if (contact_volume["baseline_abs"] or 0) > 0 else "decreased"
+    efficiency = "weakened" if aht["baseline_status"] == "bad" else "remained stable"
+    fcr_text = "declined" if fcr["baseline_status"] == "bad" else "held stable"
+    csat_text = "should be interpreted with response volume" if csat["baseline_status"] == "bad" else "remained broadly stable"
+    cost_text = "rose above baseline" if compensation["baseline_status"] == "bad" else "remained within the expected range"
+    return (
+        f"This week, support demand {demand} versus the four-week baseline while efficiency {efficiency}. "
+        f"FCR {fcr_text} versus baseline, CSAT {csat_text}, and compensation cost {cost_text}."
     )
 
 
@@ -1101,113 +1271,223 @@ def write_dashboard(summary):
 
 
 def write_kpi_reporting_dashboard(summary):
-    reporting_metrics = ["contact_volume", "contact_rate", "avg_aht_minutes", "fcr_rate", "avg_csat", "compensation_cost"]
-    cards = []
-    latest = summary["latest_overall"]
-    for metric in reporting_metrics:
-        cards.append(
+    comparisons = build_reporting_comparisons(summary)
+    lookup = comparison_by_metric(comparisons)
+    narrative = reporting_narrative(lookup)
+
+    theme_cards = [
+        ("Demand", ["contact_volume", "contact_rate"], "Overall support demand"),
+        ("Efficiency", ["avg_aht_minutes", "backlog_end_of_week"], "Handling time and backlog"),
+        ("Customer experience", ["fcr_rate", "avg_csat"], "Resolution quality and sentiment"),
+        ("Cost / compensation", ["compensation_cost"], "Customer appeasement cost"),
+        ("Operational risk", ["cancellation_rate"], "Order-level risk"),
+    ]
+    theme_html = []
+    for title, metrics, subtitle in theme_cards:
+        status = theme_status(metrics, lookup)
+        metric_bits = " · ".join(
+            f"{METRIC_LABELS[m]} {format_reporting_change(m, lookup[m]['baseline_abs'], lookup[m]['baseline_pct'])}"
+            for m in metrics
+        )
+        theme_html.append(
             f"""
-            <section class="kpi">
-              <span>{escape(METRIC_LABELS[metric])}</span>
-              <strong>{escape(format_value(metric, latest.get(metric)))}</strong>
-              <small>{escape(METRIC_DEFINITIONS[metric]['good_direction'])} is favorable</small>
+            <section class="theme-card {escape(status)}">
+              <div><span>{escape(subtitle)}</span><h2>{escape(title)}</h2></div>
+              {status_badge(status)}
+              <p>{escape(metric_bits)} vs 4-week baseline</p>
             </section>"""
         )
+
+    kpi_cards = []
+    for item in comparisons:
+        kpi_cards.append(
+            f"""
+            <section class="kpi-card {escape(item['baseline_status'])}">
+              <div class="kpi-head">
+                <span>{escape(item['metric_label'])}</span>
+                {status_badge(item['baseline_status'])}
+              </div>
+              <strong>{escape(format_value(item['metric'], item['latest_value']))}</strong>
+              <div class="compare-grid">
+                <div><small>Previous week</small><b>{escape(format_value(item['metric'], item['previous_value']))}</b></div>
+                <div><small>WoW</small><b>{arrow_entity(item['wow_abs'])} {escape(format_reporting_change(item['metric'], item['wow_abs'], item['wow_pct']))}</b></div>
+                <div><small>4-week avg</small><b>{escape(format_value(item['metric'], item['baseline_value']))}</b></div>
+                <div><small>Vs baseline</small><b>{arrow_entity(item['baseline_abs'])} {escape(format_reporting_change(item['metric'], item['baseline_abs'], item['baseline_pct']))}</b></div>
+              </div>
+            </section>"""
+        )
+
     trend_sections = []
-    for metric in ["contact_volume", "contact_rate", "avg_aht_minutes", "fcr_rate", "avg_csat", "compensation_cost"]:
+    for metric in [
+        "contact_volume",
+        "contact_rate",
+        "avg_aht_minutes",
+        "fcr_rate",
+        "avg_csat",
+        "compensation_cost",
+        "cancellation_rate",
+    ]:
         trend_sections.append(
             f"""
-            <section class="panel">
+            <section class="panel trend-panel">
               <div class="panel-heading"><span>KPI trend</span><h2>{escape(METRIC_LABELS[metric])}</h2></div>
               {svg_line_chart_from_summary(summary, metric)}
             </section>"""
         )
+
     country_rows = []
     for row in summary["country_summary"][:8]:
+        status = segment_status(row)
         country_rows.append(
             f"""
             <tr>
               <td>{escape(row['country_name'])}</td>
               <td>{escape(format_value('contact_volume', row['contact_volume']))}</td>
               <td>{escape(format_value('contact_rate', row['contact_rate']))}</td>
-              <td>{escape(format_value('avg_aht_minutes', row['avg_aht_minutes']))}</td>
               <td>{escape(format_value('fcr_rate', row['fcr_rate']))}</td>
               <td>{escape(format_value('avg_csat', row['avg_csat']))}</td>
+              <td>{escape(format_value('compensation_cost', row['compensation_cost']))}</td>
+              <td>{status_badge(status)}</td>
             </tr>"""
         )
+
     reason_rows = []
     for row in summary["reason_summary"][:8]:
+        status = segment_status(row)
         reason_rows.append(
             f"""
             <tr>
               <td>{escape(row['contact_reason_name'])}</td>
               <td>{escape(format_value('contact_volume', row['contact_volume']))}</td>
-              <td>{escape(format_value('contact_rate', row['contact_rate']))}</td>
               <td>{escape(format_value('avg_aht_minutes', row['avg_aht_minutes']))}</td>
               <td>{escape(format_value('fcr_rate', row['fcr_rate']))}</td>
+              <td>{escape(format_value('avg_csat', row['avg_csat']))}</td>
               <td>{escape(format_value('compensation_cost', row['compensation_cost']))}</td>
+              <td>{status_badge(status)}</td>
             </tr>"""
         )
+
+    movement_rows = []
+    for item in comparisons:
+        movement_rows.append(
+            f"""
+            <tr>
+              <td>{escape(item['metric_label'])}</td>
+              <td>{escape(format_value(item['metric'], item['latest_value']))}</td>
+              <td>{escape(format_value(item['metric'], item['previous_value']))}</td>
+              <td>{arrow_entity(item['wow_abs'])} {escape(format_reporting_change(item['metric'], item['wow_abs'], item['wow_pct']))}</td>
+              <td>{escape(format_value(item['metric'], item['baseline_value']))}</td>
+              <td>{arrow_entity(item['baseline_abs'])} {escape(format_reporting_change(item['metric'], item['baseline_abs'], item['baseline_pct']))}</td>
+              <td>{status_badge(item['baseline_status'])}</td>
+              <td>{escape(item['interpretation'])}</td>
+            </tr>"""
+        )
+
     html = f"""<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Analytics KPI Reporting Dashboard</title>
+  <title>AI Analytics Weekly KPI Performance Overview</title>
   <style>
+    :root {{
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #dbe3ef;
+      --soft: #f8fafc;
+      --good: #166534;
+      --bad: #991b1b;
+      --warn: #92400e;
+      --blue: #2563eb;
+    }}
     * {{ box-sizing: border-box; }}
-    body {{ margin: 0; color: #0f172a; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; }}
-    header {{ padding: 28px clamp(18px, 4vw, 56px) 18px; border-bottom: 1px solid #dbe3ef; }}
+    body {{ margin: 0; color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; }}
+    header {{ padding: 28px clamp(18px, 4vw, 56px) 18px; border-bottom: 1px solid var(--line); }}
     nav {{ display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }}
-    nav a {{ color: #0f172a; text-decoration: none; border: 1px solid #dbe3ef; border-radius: 6px; padding: 7px 10px; }}
-    nav a.active {{ color: #fff; background: #0f172a; border-color: #0f172a; }}
+    nav a {{ color: var(--ink); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }}
+    nav a.active {{ color: #fff; background: var(--ink); border-color: var(--ink); }}
     h1 {{ margin: 0; font-size: clamp(26px, 4vw, 42px); letter-spacing: 0; }}
-    header p, .note {{ color: #475569; line-height: 1.55; max-width: 900px; }}
+    header p, .note {{ color: var(--muted); line-height: 1.55; max-width: 940px; }}
     main {{ padding: 24px clamp(18px, 4vw, 56px) 48px; }}
-    .meta {{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; color: #475569; font-size: 14px; }}
-    .meta span {{ border: 1px solid #dbe3ef; border-radius: 6px; padding: 6px 9px; background: #f8fafc; }}
-    .kpi-grid {{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }}
-    .kpi {{ border: 1px solid #dbe3ef; border-radius: 8px; padding: 14px; min-height: 110px; }}
-    .kpi span {{ color: #475569; font-size: 13px; }}
-    .kpi strong {{ display: block; margin-top: 10px; font-size: 26px; letter-spacing: 0; }}
-    .kpi small {{ display: block; margin-top: 8px; color: #475569; }}
+    .meta {{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; color: var(--muted); font-size: 14px; }}
+    .meta span {{ border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; background: var(--soft); }}
+    .section-title {{ margin: 26px 0 12px; font-size: 20px; }}
+    .theme-grid {{ display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 22px; }}
+    .theme-card {{ border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff; min-height: 132px; }}
+    .theme-card span {{ color: var(--muted); font-size: 12px; }}
+    .theme-card h2 {{ margin: 4px 0 10px; font-size: 17px; }}
+    .theme-card p {{ color: var(--muted); line-height: 1.4; margin: 10px 0 0; font-size: 13px; }}
+    .kpi-grid {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }}
+    .kpi-card {{ border: 1px solid var(--line); border-radius: 8px; padding: 14px; min-height: 174px; }}
+    .kpi-card.good {{ border-top: 4px solid #16a34a; }}
+    .kpi-card.bad {{ border-top: 4px solid #dc2626; }}
+    .kpi-card.neutral {{ border-top: 4px solid #94a3b8; }}
+    .kpi-head {{ display: flex; align-items: start; justify-content: space-between; gap: 8px; }}
+    .kpi-head span {{ color: var(--muted); font-size: 13px; }}
+    .kpi-card strong {{ display: block; margin-top: 10px; font-size: 25px; letter-spacing: 0; }}
+    .compare-grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }}
+    .compare-grid div {{ background: var(--soft); border-radius: 6px; padding: 8px; }}
+    .compare-grid small {{ display: block; color: var(--muted); font-size: 11px; }}
+    .compare-grid b {{ display: block; margin-top: 3px; font-size: 13px; }}
     .grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }}
-    .panel {{ border: 1px solid #dbe3ef; border-radius: 8px; padding: 16px; overflow: hidden; }}
+    .panel {{ border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow: hidden; }}
     .wide {{ grid-column: 1 / -1; }}
-    .panel-heading span {{ color: #2563eb; font-weight: 700; font-size: 12px; text-transform: uppercase; }}
+    .panel-heading span {{ color: var(--blue); font-weight: 700; font-size: 12px; text-transform: uppercase; }}
     .panel-heading h2 {{ margin: 3px 0 12px; font-size: 18px; letter-spacing: 0; }}
+    .trend-grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }}
+    .trend-panel svg {{ max-height: 240px; }}
     svg {{ width: 100%; height: auto; display: block; }}
     table {{ width: 100%; border-collapse: collapse; font-size: 14px; }}
-    th, td {{ padding: 10px 8px; border-bottom: 1px solid #dbe3ef; text-align: left; vertical-align: top; }}
-    th {{ color: #475569; font-size: 12px; text-transform: uppercase; }}
-    @media (max-width: 900px) {{ .kpi-grid, .grid {{ grid-template-columns: 1fr; }} }}
+    th, td {{ padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }}
+    th {{ color: var(--muted); font-size: 12px; text-transform: uppercase; }}
+    .badge {{ display: inline-flex; white-space: nowrap; border-radius: 999px; padding: 3px 8px; font-size: 12px; border: 1px solid var(--line); }}
+    .badge.good {{ color: var(--good); border-color: #bbf7d0; background: #f0fdf4; }}
+    .badge.bad {{ color: var(--bad); border-color: #fecaca; background: #fff1f2; }}
+    .badge.neutral {{ color: #334155; background: var(--soft); }}
+    @media (max-width: 1100px) {{ .theme-grid, .kpi-grid {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
+    @media (max-width: 900px) {{ .theme-grid, .kpi-grid, .grid, .trend-grid {{ grid-template-columns: 1fr; }} }}
   </style>
 </head>
 <body>
   <header>
     <nav>{nav_html("reporting")}</nav>
-    <h1>KPI Reporting Dashboard</h1>
-    <p>Answers: how is customer support performance trending? This is the standard reporting view from the governed KPI mart, separate from anomaly investigation.</p>
+    <h1>Weekly KPI Performance Overview</h1>
+    <p>{escape(narrative)}</p>
     <div class="meta">
       <span>Latest week: {escape(summary['latest_week'])}</span>
+      <span>Previous week: {escape(summary['weekly_series'][-2]['week_start'])}</span>
+      <span>Baseline: {escape(', '.join(summary['baseline_weeks']))}</span>
       <span>Source: data/marts/mart_weekly_cs_kpi_by_country_reason.csv</span>
       <span>{escape(disclaimer_html())}</span>
     </div>
   </header>
   <main>
-    <section class="kpi-grid">{''.join(cards)}</section>
-    <section class="grid">
+    <h2 class="section-title">Executive summary</h2>
+    <section class="theme-grid">{''.join(theme_html)}</section>
+
+    <h2 class="section-title">Main KPI cards</h2>
+    <section class="kpi-grid">{''.join(kpi_cards)}</section>
+
+    <h2 class="section-title">KPI trend overview</h2>
+    <section class="trend-grid">
       {''.join(trend_sections)}
+    </section>
+
+    <section class="grid">
       <section class="panel wide">
         <div class="panel-heading"><span>Country breakdown</span><h2>Latest week by country</h2></div>
-        <table><thead><tr><th>Country</th><th>Contacts</th><th>Contact rate</th><th>AHT</th><th>FCR</th><th>CSAT</th></tr></thead><tbody>{''.join(country_rows)}</tbody></table>
+        <table><thead><tr><th>Country</th><th>Contacts</th><th>Contact rate</th><th>FCR</th><th>CSAT</th><th>Compensation</th><th>Status</th></tr></thead><tbody>{''.join(country_rows)}</tbody></table>
       </section>
       <section class="panel wide">
         <div class="panel-heading"><span>Contact reason breakdown</span><h2>Latest week by reason</h2></div>
-        <table><thead><tr><th>Reason</th><th>Contacts</th><th>Contact rate</th><th>AHT</th><th>FCR</th><th>Compensation</th></tr></thead><tbody>{''.join(reason_rows)}</tbody></table>
+        <table><thead><tr><th>Reason</th><th>Contacts</th><th>AHT</th><th>FCR</th><th>CSAT</th><th>Compensation</th><th>Status</th></tr></thead><tbody>{''.join(reason_rows)}</tbody></table>
+      </section>
+      <section class="panel wide">
+        <div class="panel-heading"><span>KPI movement summary</span><h2>Latest week vs previous week and four-week baseline</h2></div>
+        <table><thead><tr><th>KPI</th><th>Latest week</th><th>Previous week</th><th>WoW change</th><th>4-week avg</th><th>Vs baseline</th><th>Status</th><th>Business interpretation</th></tr></thead><tbody>{''.join(movement_rows)}</tbody></table>
       </section>
       <section class="panel wide note">
-        <strong>Business interpretation notes.</strong> Use this page for recurring KPI reporting. For exception triage, use the Weekly Diagnostics Dashboard. Order-based metrics such as cancellation rate and contact rate require grain awareness because order volume is repeated across reason-level rows.
+        <strong>Reporting note.</strong> This page is an overall weekly performance view: KPI health, period-over-period movement, country and reason overview. For anomaly ranking, confidence, business impact, analyst validation, and escalation recommendations, use the Weekly Diagnostics Dashboard.
       </section>
     </section>
   </main>
