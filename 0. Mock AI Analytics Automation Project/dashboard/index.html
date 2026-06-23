@@ -50,6 +50,12 @@
     .summary-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--soft); }
     .summary-card h2 { margin: 0 0 8px; font-size: 16px; }
     .summary-card ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.45; }
+    .insight-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+    .insight-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--soft); min-height: 142px; }
+    .insight-card span { color: var(--gold); font-weight: 700; font-size: 12px; text-transform: uppercase; }
+    .insight-card h3 { margin: 6px 0 8px; font-size: 16px; letter-spacing: 0; }
+    .insight-card p { color: var(--muted); margin: 0 0 8px; line-height: 1.4; }
+    .insight-card small { color: var(--muted); line-height: 1.35; display: block; }
     .panel-heading { margin-bottom: 12px; }
     .panel-heading span { color: var(--gold); font-weight: 700; font-size: 12px; text-transform: uppercase; }
     .panel-heading h2 { margin: 3px 0 0; font-size: 18px; letter-spacing: 0; }
@@ -66,7 +72,7 @@
     .pill.confidence-low, .pill.impact-low { color: #991b1b; border-color: #fecaca; background: #fff1f2; }
     .note { color: var(--muted); line-height: 1.55; }
     @media (max-width: 900px) {
-      .kpi-grid, .grid, .summary-grid { grid-template-columns: 1fr; }
+      .kpi-grid, .grid, .summary-grid, .insight-grid { grid-template-columns: 1fr; }
       table { font-size: 13px; }
     }
   </style>
@@ -87,7 +93,7 @@
     <section class="summary-grid">
       <div class="summary-card"><h2>What changed this week?</h2><ul><li>FCR is -2.8 pp vs baseline</li></ul></div>
       <div class="summary-card"><h2>Movement that matters most</h2><p class="note">Germany / Late delivery / FCR has high business impact and high confidence.</p></div>
-      <div class="summary-card"><h2>Investigate first</h2><ul><li>DE Late delivery FCR</li><li>NL Late delivery FCR</li><li>PL Late delivery FCR</li></ul></div>
+      <div class="summary-card"><h2>Investigate first</h2><ul><li>DE Late delivery FCR</li><li>DE Late delivery Compensation cost</li><li>NL Late delivery Contact rate</li></ul></div>
       <div class="summary-card"><h2>Low confidence</h2><ul><li>UK Cancellation CSAT</li><li>AT Payment issue CSAT</li><li>NL Payment issue CSAT</li></ul></div>
     </section>
     <section class="kpi-grid">
@@ -257,36 +263,120 @@
             </section>
       <section class="panel wide">
         <div class="panel-heading">
-          <span>Exception review</span>
-          <h2>Top country and contact-reason signals</h2>
+          <span>Pattern review</span>
+          <h2>Repeated patterns and balanced KPI signals</h2>
         </div>
-        <svg viewBox="0 0 760 320" role="img" aria-label="Top weekly KPI anomalies">
-<rect width="760" height="320" fill="#ffffff" />
-<text x="198" y="36" text-anchor="end" font-size="12" fill="#0f172a">DE | Late delivery | FCR</text>
-<rect x="210" y="20" width="430.0" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="648.0" y="36" font-size="12" fill="#334155">-4.7 pp</text>
-<text x="198" y="68" text-anchor="end" font-size="12" fill="#0f172a">NL | Late delivery | FCR</text>
-<rect x="210" y="52" width="430.0" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="648.0" y="68" font-size="12" fill="#334155">-11.6 pp</text>
-<text x="198" y="100" text-anchor="end" font-size="12" fill="#0f172a">PL | Late delivery | FCR</text>
-<rect x="210" y="84" width="430.0" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="648.0" y="100" font-size="12" fill="#334155">-11.3 pp</text>
-<text x="198" y="132" text-anchor="end" font-size="12" fill="#0f172a">AT | Late delivery | FCR</text>
-<rect x="210" y="116" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="497.5" y="132" font-size="12" fill="#334155">-6.8 pp</text>
-<text x="198" y="164" text-anchor="end" font-size="12" fill="#0f172a">DE | Cancellation | FCR</text>
-<rect x="210" y="148" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="497.5" y="164" font-size="12" fill="#334155">-6.6 pp</text>
-<text x="198" y="196" text-anchor="end" font-size="12" fill="#0f172a">DE | Missing item | FCR</text>
-<rect x="210" y="180" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="497.5" y="196" font-size="12" fill="#334155">-8.0 pp</text>
-<text x="198" y="228" text-anchor="end" font-size="12" fill="#0f172a">DE | Payment issue | FCR</text>
-<rect x="210" y="212" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="497.5" y="228" font-size="12" fill="#334155">-10.7 pp</text>
-<text x="198" y="260" text-anchor="end" font-size="12" fill="#0f172a">UK | Cancellation | FCR</text>
-<rect x="210" y="244" width="279.5" height="22" rx="3" fill="#dc2626" opacity="0.88" />
-<text x="497.5" y="260" font-size="12" fill="#334155">-14.3 pp</text>
-</svg>
+        <div class="insight-grid">
+            <article class="insight-card">
+              <span>Quality</span>
+              <h3>Late delivery FCR deteriorated across 4 countries.</h3>
+              <p>-8.6 pp average movement; countries: AT, DE, NL, PL</p>
+              <small>Check delayed-order status, ETA accuracy, courier/warehouse incidents, repeat-contact samples, and whether customers needed follow-up after the first response.</small>
+            </article>
+            <article class="insight-card">
+              <span>Quality</span>
+              <h3>Refund request FCR deteriorated across 4 countries.</h3>
+              <p>-5.0 pp average movement; countries: AT, DE, NL, UK</p>
+              <small>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.</small>
+            </article>
+            <article class="insight-card">
+              <span>Quality</span>
+              <h3>Cancellation FCR deteriorated across 3 countries.</h3>
+              <p>-9.0 pp average movement; countries: AT, DE, UK</p>
+              <small>Review cancellation flow ownership, refund routing, macro accuracy, reopened cases, and unresolved follow-up reasons.</small>
+            </article>
+            <article class="insight-card">
+              <span>Cost / risk</span>
+              <h3>Late delivery Compensation cost deteriorated across 2 countries.</h3>
+              <p>+19 average movement; countries: DE, NL</p>
+              <small>Decompose cost into contact volume and compensation per contact; review delivery/cancellation policy usage and large goodwill outliers.</small>
+            </article></div>
+        <table>
+          <thead>
+            <tr><th>Rank</th><th>Balanced signal</th><th>Latest vs baseline</th><th>Business impact</th><th>Confidence</th><th>Recommended next action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1</strong></td>
+              <td><strong>DE / Late delivery</strong><br><small>FCR · Quality</small></td>
+              <td>-4.7 pp</td>
+              <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.</td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td><strong>DE / Late delivery</strong><br><small>Compensation cost · Cost / risk</small></td>
+              <td>+20 (+10%)</td>
+              <td><span class="pill impact-medium">medium</span><br><small>score 30.7</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.</td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td><strong>NL / Late delivery</strong><br><small>Contact rate · Demand</small></td>
+              <td>+1.0 pp</td>
+              <td><span class="pill impact-medium">medium</span><br><small>score 21.0</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Validate order denominator and identify which contact reasons are creating demand above order growth.</td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td><strong>NL / Late delivery</strong><br><small>AHT · Efficiency</small></td>
+              <td>+0.38</td>
+              <td><span class="pill impact-low">low</span><br><small>score 5.8</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Review ticket samples by reason and compare staffing, tool incidents, and escalation mix before proposing a process action.</td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td><strong>NL / Account issue</strong><br><small>Cancellation rate · Cost / risk</small></td>
+              <td>+1.4 pp</td>
+              <td><span class="pill impact-low">low</span><br><small>score 12.3</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Validate the country-week order grain and review fulfillment or policy changes before escalation.</td>
+            </tr>
+            <tr>
+              <td><strong>6</strong></td>
+              <td><strong>NL / Cancellation</strong><br><small>Backlog · Efficiency</small></td>
+              <td>+6 (+256%)</td>
+              <td><span class="pill impact-low">low</span><br><small>score 10.7</small></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td>Monitor and compare with adjacent weeks.</td>
+            </tr>
+            <tr>
+              <td><strong>7</strong></td>
+              <td><strong>DE / Cancellation</strong><br><small>CSAT · Quality</small></td>
+              <td>-0.32</td>
+              <td><span class="pill impact-low">low</span><br><small>score 9.9</small></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td>Check response count and sample recent low-score contacts before linking the movement to service quality.</td>
+            </tr>
+            <tr>
+              <td><strong>8</strong></td>
+              <td><strong>DE / Cancellation</strong><br><small>Contact rate · Demand</small></td>
+              <td>+0.1 pp</td>
+              <td><span class="pill impact-low">low</span><br><small>score 17.0</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Validate order denominator and identify which contact reasons are creating demand above order growth.</td>
+            </tr>
+            <tr>
+              <td><strong>9</strong></td>
+              <td><strong>NL / Late delivery</strong><br><small>FCR · Quality</small></td>
+              <td>-11.6 pp</td>
+              <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.</td>
+            </tr>
+            <tr>
+              <td><strong>10</strong></td>
+              <td><strong>NL / Late delivery</strong><br><small>Compensation cost · Cost / risk</small></td>
+              <td>+19 (+18%)</td>
+              <td><span class="pill impact-medium">medium</span><br><small>score 22.4</small></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td>Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.</td>
+            </tr></tbody>
+        </table>
       </section>
       <section class="panel wide">
         <div class="panel-heading">
@@ -304,7 +394,23 @@
               <td>high</td>
               <td>high</td>
               <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
+              <td>Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.</td>
+            </tr>
+            <tr>
+              <td>Germany / Late delivery</td>
+              <td>Compensation cost</td>
+              <td>medium</td>
+              <td>high</td>
+              <td>CS Policy / Finance</td>
+              <td>Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.</td>
+            </tr>
+            <tr>
+              <td>Netherlands / Late delivery</td>
+              <td>Contact rate</td>
+              <td>medium</td>
+              <td>high</td>
+              <td>Product Ops / CS Ops</td>
+              <td>Validate order denominator and identify which contact reasons are creating demand above order growth.</td>
             </tr>
             <tr>
               <td>Netherlands / Late delivery</td>
@@ -312,7 +418,15 @@
               <td>high</td>
               <td>high</td>
               <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
+              <td>Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.</td>
+            </tr>
+            <tr>
+              <td>Netherlands / Late delivery</td>
+              <td>Compensation cost</td>
+              <td>medium</td>
+              <td>high</td>
+              <td>CS Policy / Finance</td>
+              <td>Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.</td>
             </tr>
             <tr>
               <td>Poland / Late delivery</td>
@@ -320,31 +434,7 @@
               <td>high</td>
               <td>high</td>
               <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td>Austria / Late delivery</td>
-              <td>FCR</td>
-              <td>high</td>
-              <td>medium</td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td>Germany / Cancellation</td>
-              <td>FCR</td>
-              <td>high</td>
-              <td>medium</td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td>Germany / Missing item</td>
-              <td>FCR</td>
-              <td>high</td>
-              <td>medium</td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
+              <td>Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.</td>
             </tr></tbody>
         </table>
       </section>
@@ -378,10 +468,101 @@
               <td><span class="pill high">high</span></td>
               <td><span class="pill confidence-high">high</span></td>
               <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>A delivery-related FCR drop can create repeat contacts and weaken trust because the underlying order issue may still be unresolved.</td>
+              <td>Check delayed-order status, ETA accuracy, courier/warehouse incidents, repeat-contact samples, and whether customers needed follow-up after the first response.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
               <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
+              <td>Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.</td>
+            </tr>
+            <tr>
+              <td><strong>DE / Late delivery / Compensation cost</strong><br><small>Contacts 41; orders 999</small></td>
+              <td>EUR 216</td>
+              <td>EUR 197</td>
+              <td>+20 (+10%)</td>
+              <td><span class="pill medium">medium</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-medium">medium</span><br><small>score 30.7</small></td>
+              <td>Delivery compensation cost can signal expensive service recovery caused by operational failures.</td>
+              <td>Decompose cost into contact volume and compensation per contact; review delivery/cancellation policy usage and large goodwill outliers.<br><small>Volume effect: contacts -12; compensation/contact 5.3 vs 3.7 baseline.</small></td>
+              <td>CS Policy / Finance</td>
+              <td>Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.</td>
+            </tr>
+            <tr>
+              <td><strong>NL / Late delivery / Contact rate</strong><br><small>Contacts 30; orders 692</small></td>
+              <td>4.3%</td>
+              <td>3.4%</td>
+              <td>+1.0 pp</td>
+              <td><span class="pill monitor">monitor</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-medium">medium</span><br><small>score 21.0</small></td>
+              <td>A higher contact rate means support demand is rising relative to orders.</td>
+              <td>Compare contact movement with order movement; check product/process friction and reason mix shift.<br><small>Contacts changed +9; orders changed +64. Interpret relative demand, not contacts alone.</small></td>
+              <td>Product Ops / CS Ops</td>
+              <td>Validate order denominator and identify which contact reasons are creating demand above order growth.</td>
+            </tr>
+            <tr>
+              <td><strong>NL / Late delivery / AHT</strong><br><small>Contacts 30; orders 692</small></td>
+              <td>7.8 min</td>
+              <td>7.4 min</td>
+              <td>+0.38</td>
+              <td><span class="pill monitor">monitor</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-low">low</span><br><small>score 5.8</small></td>
+              <td>Delivery contacts with longer AHT can consume capacity quickly because agents often need partner checks and customer follow-up.</td>
+              <td>Check whether agents are spending more time tracing delivery status, escalating to partners, or handling unclear ETA information.<br><small>Compare AHT movement with contact volume change (+9) and reason mix before concluding process impact.</small></td>
+              <td>CS Operations</td>
+              <td>Review ticket samples by reason and compare staffing, tool incidents, and escalation mix before proposing a process action.</td>
+            </tr>
+            <tr>
+              <td><strong>NL / Account issue / Cancellation rate</strong><br><small>Contacts 3; orders 692</small></td>
+              <td>5.5%</td>
+              <td>4.0%</td>
+              <td>+1.4 pp</td>
+              <td><span class="pill monitor">monitor</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-low">low</span><br><small>score 12.3</small></td>
+              <td>Cancellation rate is an order-level business outcome and should be investigated at country-week grain.</td>
+              <td>Validate at country-week grain; check fulfillment, partner, delivery, and policy/process changes.<br><small>Country-week order metric repeated across reasons; validate using country-week totals, not summed reason rows.</small></td>
+              <td>Fulfillment Ops</td>
+              <td>Validate the country-week order grain and review fulfillment or policy changes before escalation.</td>
+            </tr>
+            <tr>
+              <td><strong>NL / Cancellation / Backlog</strong><br><small>Contacts 14; orders 692</small></td>
+              <td>8</td>
+              <td>2</td>
+              <td>+6 (+256%)</td>
+              <td><span class="pill high">high</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-low">low</span><br><small>score 10.7</small></td>
+              <td>Backlog creates delayed resolution and future customer experience risk.</td>
+              <td>Check staffing coverage, queue age, contact volume, and AHT movement.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>CS Operations</td>
+              <td>Monitor and compare with adjacent weeks.</td>
+            </tr>
+            <tr>
+              <td><strong>DE / Cancellation / CSAT</strong><br><small>Contacts 19; CSAT responses 12</small></td>
+              <td>3.92</td>
+              <td>4.24</td>
+              <td>-0.32</td>
+              <td><span class="pill medium">medium</span></td>
+              <td><span class="pill confidence-medium">medium</span></td>
+              <td><span class="pill impact-low">low</span><br><small>score 9.9</small></td>
+              <td>CSAT movement affects customer trust, but response count determines reliability.</td>
+              <td>Check survey response count, complaint themes, country/reason friction, and whether FCR or AHT also deteriorated.<br><small>CSAT response count: 12 latest vs 6.8 baseline.</small></td>
+              <td>CX Quality</td>
+              <td>Check response count and sample recent low-score contacts before linking the movement to service quality.</td>
+            </tr>
+            <tr>
+              <td><strong>DE / Cancellation / Contact rate</strong><br><small>Contacts 19; orders 999</small></td>
+              <td>1.9%</td>
+              <td>1.8%</td>
+              <td>+0.1 pp</td>
+              <td><span class="pill monitor">monitor</span></td>
+              <td><span class="pill confidence-high">high</span></td>
+              <td><span class="pill impact-low">low</span><br><small>score 17.0</small></td>
+              <td>A higher contact rate means support demand is rising relative to orders.</td>
+              <td>Compare contact movement with order movement; check product/process friction and reason mix shift.<br><small>Contacts changed +0; orders changed -5. Interpret relative demand, not contacts alone.</small></td>
+              <td>Product Ops / CS Ops</td>
+              <td>Validate order denominator and identify which contact reasons are creating demand above order growth.</td>
             </tr>
             <tr>
               <td><strong>NL / Late delivery / FCR</strong><br><small>Contacts 30; orders 692</small></td>
@@ -391,114 +572,23 @@
               <td><span class="pill high">high</span></td>
               <td><span class="pill confidence-high">high</span></td>
               <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
+              <td>A delivery-related FCR drop can create repeat contacts and weaken trust because the underlying order issue may still be unresolved.</td>
+              <td>Check delayed-order status, ETA accuracy, courier/warehouse incidents, repeat-contact samples, and whether customers needed follow-up after the first response.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
               <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
+              <td>Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.</td>
             </tr>
             <tr>
-              <td><strong>PL / Late delivery / FCR</strong><br><small>Contacts 23; orders 554</small></td>
-              <td>72.7%</td>
-              <td>84.0%</td>
-              <td>-11.3 pp</td>
-              <td><span class="pill high">high</span></td>
+              <td><strong>NL / Late delivery / Compensation cost</strong><br><small>Contacts 30; orders 692</small></td>
+              <td>EUR 123</td>
+              <td>EUR 105</td>
+              <td>+19 (+18%)</td>
+              <td><span class="pill medium">medium</span></td>
               <td><span class="pill confidence-high">high</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 100.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td><strong>AT / Late delivery / FCR</strong><br><small>Contacts 13; orders 393</small></td>
-              <td>84.6%</td>
-              <td>91.4%</td>
-              <td>-6.8 pp</td>
-              <td><span class="pill high">high</span></td>
-              <td><span class="pill confidence-medium">medium</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td><strong>DE / Cancellation / FCR</strong><br><small>Contacts 19; orders 999</small></td>
-              <td>88.9%</td>
-              <td>95.5%</td>
-              <td>-6.6 pp</td>
-              <td><span class="pill high">high</span></td>
-              <td><span class="pill confidence-medium">medium</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td><strong>DE / Missing item / FCR</strong><br><small>Contacts 18; orders 999</small></td>
-              <td>88.2%</td>
-              <td>96.2%</td>
-              <td>-8.0 pp</td>
-              <td><span class="pill high">high</span></td>
-              <td><span class="pill confidence-medium">medium</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td><strong>DE / Payment issue / FCR</strong><br><small>Contacts 8; orders 999</small></td>
-              <td>85.7%</td>
-              <td>96.4%</td>
-              <td>-10.7 pp</td>
-              <td><span class="pill high">high</span></td>
-              <td><span class="pill confidence-medium">medium</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td><strong>UK / Cancellation / FCR</strong><br><small>Contacts 16; orders 869</small></td>
-              <td>85.7%</td>
-              <td>100.0%</td>
-              <td>-14.3 pp</td>
-              <td><span class="pill high">high</span></td>
-              <td><span class="pill confidence-medium">medium</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 65.0</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td><strong>UK / Account issue / FCR</strong><br><small>Contacts 8; orders 869</small></td>
-              <td>85.7%</td>
-              <td>95.8%</td>
-              <td>-10.1 pp</td>
-              <td><span class="pill high">high</span></td>
-              <td><span class="pill confidence-medium">medium</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 63.2</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
-            </tr>
-            <tr>
-              <td><strong>AT / Refund request / FCR</strong><br><small>Contacts 7; orders 393</small></td>
-              <td>80.0%</td>
-              <td>90.2%</td>
-              <td>-10.2 pp</td>
-              <td><span class="pill high">high</span></td>
-              <td><span class="pill confidence-medium">medium</span></td>
-              <td><span class="pill impact-high">high</span><br><small>score 55.6</small></td>
-              <td>Lower first-contact resolution can create repeat contacts and weaker customer experience.</td>
-              <td>Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.<br><small>Review movement alongside sample size, adjacent weeks, and operational context.</small></td>
-              <td>CS Operations</td>
-              <td>Assign owner and review source records this week.</td>
+              <td><span class="pill impact-medium">medium</span><br><small>score 22.4</small></td>
+              <td>Delivery compensation cost can signal expensive service recovery caused by operational failures.</td>
+              <td>Decompose cost into contact volume and compensation per contact; review delivery/cancellation policy usage and large goodwill outliers.<br><small>Volume effect: contacts +9; compensation/contact 4.1 vs 5.0 baseline.</small></td>
+              <td>CS Policy / Finance</td>
+              <td>Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.</td>
             </tr></tbody>
         </table>
       </section>
@@ -507,6 +597,6 @@
       </section>
     </section>
   </main>
-  <script type="application/json" id="dashboard-data">{&quot;latest_week&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: [&quot;2026-03-23&quot;, &quot;2026-03-30&quot;, &quot;2026-04-06&quot;, &quot;2026-04-13&quot;], &quot;top_signals&quot;: [{&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8462, &quot;baseline_value&quot;: 0.8930750000000001, &quot;abs_change&quot;: -0.04687500000000011, &quot;pct_change&quot;: -0.05248719312487765, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 4.687500000000011, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 5.0, &quot;contact_volume&quot;: 41.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 216.41, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8214, &quot;baseline_value&quot;: 0.9378, &quot;abs_change&quot;: -0.11639999999999995, &quot;pct_change&quot;: -0.12412028150991677, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 11.639999999999995, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 14.0, &quot;contact_volume&quot;: 30.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 123.39, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Poland&quot;, &quot;country_code&quot;: &quot;PL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.7273, &quot;baseline_value&quot;: 0.840475, &quot;abs_change&quot;: -0.11317500000000003, &quot;pct_change&quot;: -0.13465599809631462, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 11.317500000000003, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 6.0, &quot;contact_volume&quot;: 23.0, &quot;total_orders&quot;: 554.0, &quot;compensation_cost&quot;: 61.39, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Austria&quot;, &quot;country_code&quot;: &quot;AT&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8462, &quot;baseline_value&quot;: 0.91445, &quot;abs_change&quot;: -0.06825000000000003, &quot;pct_change&quot;: -0.07463502651867246, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 6.825000000000003, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 7.0, &quot;contact_volume&quot;: 13.0, &quot;total_orders&quot;: 393.0, &quot;compensation_cost&quot;: 70.83, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8889, &quot;baseline_value&quot;: 0.9546250000000001, &quot;abs_change&quot;: -0.06572500000000003, &quot;pct_change&quot;: -0.06884902448605476, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 6.572500000000003, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 12.0, &quot;contact_volume&quot;: 19.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Missing item&quot;, &quot;contact_reason_id&quot;: &quot;missing_item&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8824, &quot;baseline_value&quot;: 0.9625, &quot;abs_change&quot;: -0.08010000000000006, &quot;pct_change&quot;: -0.08322077922077928, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 8.010000000000005, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 18.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 26.28, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Payment issue&quot;, &quot;contact_reason_id&quot;: &quot;payment_issue&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 0.964275, &quot;abs_change&quot;: -0.10717500000000002, &quot;pct_change&quot;: -0.11114567939643775, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 10.717500000000001, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 8.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;United Kingdom&quot;, &quot;country_code&quot;: &quot;UK&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 1.0, &quot;abs_change&quot;: -0.14290000000000003, &quot;pct_change&quot;: -0.14290000000000003, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 14.290000000000003, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 65.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 4.0, &quot;contact_volume&quot;: 16.0, &quot;total_orders&quot;: 869.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;United Kingdom&quot;, &quot;country_code&quot;: &quot;UK&quot;, &quot;contact_reason_name&quot;: &quot;Account issue&quot;, &quot;contact_reason_id&quot;: &quot;account_issue&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8571, &quot;baseline_value&quot;: 0.958325, &quot;abs_change&quot;: -0.10122500000000001, &quot;pct_change&quot;: -0.10562700545222134, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 10.1225, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 63.164400000000015, &quot;impact_score_raw&quot;: 97.17600000000002, &quot;csat_responses&quot;: 0, &quot;contact_volume&quot;: 8.0, &quot;total_orders&quot;: 869.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Austria&quot;, &quot;country_code&quot;: &quot;AT&quot;, &quot;contact_reason_name&quot;: &quot;Refund request&quot;, &quot;contact_reason_id&quot;: &quot;refund_request&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;current_value&quot;: 0.8, &quot;baseline_value&quot;: 0.901775, &quot;abs_change&quot;: -0.10177499999999995, &quot;pct_change&quot;: -0.11286074686035868, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 10.177499999999995, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 55.56914999999997, &quot;impact_score_raw&quot;: 85.49099999999996, &quot;csat_responses&quot;: 3.0, &quot;contact_volume&quot;: 7.0, &quot;total_orders&quot;: 393.0, &quot;compensation_cost&quot;: 73.94, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Lower first-contact resolution can create repeat contacts and weaker customer experience.&quot;, &quot;suggested_validation&quot;: &quot;Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Assign owner and review source records this week.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}]}</script>
+  <script type="application/json" id="dashboard-data">{&quot;latest_week&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: [&quot;2026-03-23&quot;, &quot;2026-03-30&quot;, &quot;2026-04-06&quot;, &quot;2026-04-13&quot;], &quot;top_signals&quot;: [{&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;metric_group&quot;: &quot;Quality&quot;, &quot;current_value&quot;: 0.8462, &quot;baseline_value&quot;: 0.8930750000000001, &quot;abs_change&quot;: -0.04687500000000011, &quot;pct_change&quot;: -0.05248719312487765, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 4.687500000000011, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 5.0, &quot;contact_volume&quot;: 41.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 216.41, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;A delivery-related FCR drop can create repeat contacts and weaken trust because the underlying order issue may still be unresolved.&quot;, &quot;suggested_validation&quot;: &quot;Check delayed-order status, ETA accuracy, courier/warehouse incidents, repeat-contact samples, and whether customers needed follow-up after the first response.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;compensation_cost&quot;, &quot;metric_label&quot;: &quot;Compensation cost&quot;, &quot;metric_group&quot;: &quot;Cost / risk&quot;, &quot;current_value&quot;: 216.41, &quot;baseline_value&quot;: 196.7075, &quot;abs_change&quot;: 19.702499999999986, &quot;pct_change&quot;: 0.10016140716546133, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;medium&quot;, &quot;severity_score&quot;: 1.9702499999999987, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;medium&quot;, &quot;impact_score&quot;: 30.66964583333333, &quot;impact_score_raw&quot;: 30.66964583333333, &quot;csat_responses&quot;: 5.0, &quot;contact_volume&quot;: 41.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 216.41, &quot;hypothesis&quot;: &quot;Compensation exposure increased. Check whether this is driven by higher contact volume, higher compensation per contact, policy change, or late delivery/cancellation mix.&quot;, &quot;why_this_matters&quot;: &quot;Delivery compensation cost can signal expensive service recovery caused by operational failures.&quot;, &quot;suggested_validation&quot;: &quot;Decompose cost into contact volume and compensation per contact; review delivery/cancellation policy usage and large goodwill outliers.&quot;, &quot;possible_owner&quot;: &quot;CS Policy / Finance&quot;, &quot;recommended_next_action&quot;: &quot;Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.&quot;, &quot;decomposition_note&quot;: &quot;Volume effect: contacts -12; compensation/contact 5.3 vs 3.7 baseline.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;contact_rate&quot;, &quot;metric_label&quot;: &quot;Contact rate&quot;, &quot;metric_group&quot;: &quot;Demand&quot;, &quot;current_value&quot;: 0.0434, &quot;baseline_value&quot;: 0.0335, &quot;abs_change&quot;: 0.009899999999999999, &quot;pct_change&quot;: 0.29552238805970144, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;monitor&quot;, &quot;severity_score&quot;: 0.9899999999999999, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;medium&quot;, &quot;impact_score&quot;: 21.048666666666666, &quot;impact_score_raw&quot;: 21.048666666666666, &quot;csat_responses&quot;: 14.0, &quot;contact_volume&quot;: 30.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 123.39, &quot;hypothesis&quot;: &quot;Possible delivery reliability pressure. Validate late-order rate, courier incidents, and warehouse capacity.&quot;, &quot;why_this_matters&quot;: &quot;A higher contact rate means support demand is rising relative to orders.&quot;, &quot;suggested_validation&quot;: &quot;Compare contact movement with order movement; check product/process friction and reason mix shift.&quot;, &quot;possible_owner&quot;: &quot;Product Ops / CS Ops&quot;, &quot;recommended_next_action&quot;: &quot;Validate order denominator and identify which contact reasons are creating demand above order growth.&quot;, &quot;decomposition_note&quot;: &quot;Contacts changed +9; orders changed +64. Interpret relative demand, not contacts alone.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;avg_aht_minutes&quot;, &quot;metric_label&quot;: &quot;AHT&quot;, &quot;metric_group&quot;: &quot;Efficiency&quot;, &quot;current_value&quot;: 7.81, &quot;baseline_value&quot;: 7.425, &quot;abs_change&quot;: 0.3849999999999998, &quot;pct_change&quot;: 0.05185185185185182, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;monitor&quot;, &quot;severity_score&quot;: 3.0068499999999982, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;low&quot;, &quot;impact_score&quot;: 5.774999999999997, &quot;impact_score_raw&quot;: 5.774999999999997, &quot;csat_responses&quot;: 14.0, &quot;contact_volume&quot;: 30.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 123.39, &quot;hypothesis&quot;: &quot;AHT increased. Validate contact complexity, new-agent share, backlog pressure, process/tool issues, and contact mix.&quot;, &quot;why_this_matters&quot;: &quot;Delivery contacts with longer AHT can consume capacity quickly because agents often need partner checks and customer follow-up.&quot;, &quot;suggested_validation&quot;: &quot;Check whether agents are spending more time tracing delivery status, escalating to partners, or handling unclear ETA information.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Review ticket samples by reason and compare staffing, tool incidents, and escalation mix before proposing a process action.&quot;, &quot;decomposition_note&quot;: &quot;Compare AHT movement with contact volume change (+9) and reason mix before concluding process impact.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Account issue&quot;, &quot;contact_reason_id&quot;: &quot;account_issue&quot;, &quot;metric&quot;: &quot;cancellation_rate&quot;, &quot;metric_label&quot;: &quot;Cancellation rate&quot;, &quot;metric_group&quot;: &quot;Cost / risk&quot;, &quot;current_value&quot;: 0.0549, &quot;baseline_value&quot;: 0.0404, &quot;abs_change&quot;: 0.014499999999999999, &quot;pct_change&quot;: 0.3589108910891089, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;monitor&quot;, &quot;severity_score&quot;: 1.45, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;low&quot;, &quot;impact_score&quot;: 12.275, &quot;impact_score_raw&quot;: 12.275, &quot;csat_responses&quot;: 0, &quot;contact_volume&quot;: 3.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;Cancellation rate increased in Netherlands. Validate fulfillment, partner, delivery, and policy/process changes at country-week grain.&quot;, &quot;why_this_matters&quot;: &quot;Cancellation rate is an order-level business outcome and should be investigated at country-week grain.&quot;, &quot;suggested_validation&quot;: &quot;Validate at country-week grain; check fulfillment, partner, delivery, and policy/process changes.&quot;, &quot;possible_owner&quot;: &quot;Fulfillment Ops&quot;, &quot;recommended_next_action&quot;: &quot;Validate the country-week order grain and review fulfillment or policy changes before escalation.&quot;, &quot;decomposition_note&quot;: &quot;Country-week order metric repeated across reasons; validate using country-week totals, not summed reason rows.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;backlog_end_of_week&quot;, &quot;metric_label&quot;: &quot;Backlog&quot;, &quot;metric_group&quot;: &quot;Efficiency&quot;, &quot;current_value&quot;: 8.0, &quot;baseline_value&quot;: 2.25, &quot;abs_change&quot;: 5.75, &quot;pct_change&quot;: 2.5555555555555554, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 5.75, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;low&quot;, &quot;impact_score&quot;: 10.66, &quot;impact_score_raw&quot;: 16.4, &quot;csat_responses&quot;: 3.0, &quot;contact_volume&quot;: 14.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;Backlog pressure increased. Validate staffing coverage, unresolved queue age, and whether AHT or volume also rose.&quot;, &quot;why_this_matters&quot;: &quot;Backlog creates delayed resolution and future customer experience risk.&quot;, &quot;suggested_validation&quot;: &quot;Check staffing coverage, queue age, contact volume, and AHT movement.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Monitor and compare with adjacent weeks.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;avg_csat&quot;, &quot;metric_label&quot;: &quot;CSAT&quot;, &quot;metric_group&quot;: &quot;Quality&quot;, &quot;current_value&quot;: 3.92, &quot;baseline_value&quot;: 4.2375, &quot;abs_change&quot;: -0.3174999999999999, &quot;pct_change&quot;: -0.0749262536873156, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;medium&quot;, &quot;severity_score&quot;: 6.349999999999998, &quot;confidence&quot;: &quot;medium&quot;, &quot;business_impact&quot;: &quot;low&quot;, &quot;impact_score&quot;: 9.905999999999997, &quot;impact_score_raw&quot;: 15.239999999999995, &quot;csat_responses&quot;: 12.0, &quot;contact_volume&quot;: 19.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;CSAT decreased. Validate survey count, service quality themes, and specific reason/country friction.&quot;, &quot;why_this_matters&quot;: &quot;CSAT movement affects customer trust, but response count determines reliability.&quot;, &quot;suggested_validation&quot;: &quot;Check survey response count, complaint themes, country/reason friction, and whether FCR or AHT also deteriorated.&quot;, &quot;possible_owner&quot;: &quot;CX Quality&quot;, &quot;recommended_next_action&quot;: &quot;Check response count and sample recent low-score contacts before linking the movement to service quality.&quot;, &quot;decomposition_note&quot;: &quot;CSAT response count: 12 latest vs 6.8 baseline.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Germany&quot;, &quot;country_code&quot;: &quot;DE&quot;, &quot;contact_reason_name&quot;: &quot;Cancellation&quot;, &quot;contact_reason_id&quot;: &quot;cancellation&quot;, &quot;metric&quot;: &quot;contact_rate&quot;, &quot;metric_label&quot;: &quot;Contact rate&quot;, &quot;metric_group&quot;: &quot;Demand&quot;, &quot;current_value&quot;: 0.019, &quot;baseline_value&quot;: 0.01845, &quot;abs_change&quot;: 0.0005499999999999984, &quot;pct_change&quot;: 0.029810298102980942, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;monitor&quot;, &quot;severity_score&quot;: 0.05499999999999984, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;low&quot;, &quot;impact_score&quot;: 16.974, &quot;impact_score_raw&quot;: 16.974, &quot;csat_responses&quot;: 12.0, &quot;contact_volume&quot;: 19.0, &quot;total_orders&quot;: 999.0, &quot;compensation_cost&quot;: 0.0, &quot;hypothesis&quot;: &quot;Possible cancellation intent increase. Validate cancellation policy, supply issues, and order mix.&quot;, &quot;why_this_matters&quot;: &quot;A higher contact rate means support demand is rising relative to orders.&quot;, &quot;suggested_validation&quot;: &quot;Compare contact movement with order movement; check product/process friction and reason mix shift.&quot;, &quot;possible_owner&quot;: &quot;Product Ops / CS Ops&quot;, &quot;recommended_next_action&quot;: &quot;Validate order denominator and identify which contact reasons are creating demand above order growth.&quot;, &quot;decomposition_note&quot;: &quot;Contacts changed +0; orders changed -5. Interpret relative demand, not contacts alone.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;fcr_rate&quot;, &quot;metric_label&quot;: &quot;FCR&quot;, &quot;metric_group&quot;: &quot;Quality&quot;, &quot;current_value&quot;: 0.8214, &quot;baseline_value&quot;: 0.9378, &quot;abs_change&quot;: -0.11639999999999995, &quot;pct_change&quot;: -0.12412028150991677, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;severity_score&quot;: 11.639999999999995, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;high&quot;, &quot;impact_score&quot;: 100.0, &quot;impact_score_raw&quot;: 100, &quot;csat_responses&quot;: 14.0, &quot;contact_volume&quot;: 30.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 123.39, &quot;hypothesis&quot;: &quot;FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.&quot;, &quot;why_this_matters&quot;: &quot;A delivery-related FCR drop can create repeat contacts and weaken trust because the underlying order issue may still be unresolved.&quot;, &quot;suggested_validation&quot;: &quot;Check delayed-order status, ETA accuracy, courier/warehouse incidents, repeat-contact samples, and whether customers needed follow-up after the first response.&quot;, &quot;possible_owner&quot;: &quot;CS Operations&quot;, &quot;recommended_next_action&quot;: &quot;Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver.&quot;, &quot;decomposition_note&quot;: &quot;Review movement alongside sample size, adjacent weeks, and operational context.&quot;}, {&quot;week_start&quot;: &quot;2026-04-20&quot;, &quot;baseline_weeks&quot;: &quot;2026-03-23, 2026-03-30, 2026-04-06, 2026-04-13&quot;, &quot;country_name&quot;: &quot;Netherlands&quot;, &quot;country_code&quot;: &quot;NL&quot;, &quot;contact_reason_name&quot;: &quot;Late delivery&quot;, &quot;contact_reason_id&quot;: &quot;late_delivery&quot;, &quot;metric&quot;: &quot;compensation_cost&quot;, &quot;metric_label&quot;: &quot;Compensation cost&quot;, &quot;metric_group&quot;: &quot;Cost / risk&quot;, &quot;current_value&quot;: 123.39, &quot;baseline_value&quot;: 104.7825, &quot;abs_change&quot;: 18.6075, &quot;pct_change&quot;: 0.17758213442130127, &quot;direction&quot;: &quot;worse&quot;, &quot;severity&quot;: &quot;medium&quot;, &quot;severity_score&quot;: 1.8607500000000001, &quot;confidence&quot;: &quot;high&quot;, &quot;business_impact&quot;: &quot;medium&quot;, &quot;impact_score&quot;: 22.3824375, &quot;impact_score_raw&quot;: 22.3824375, &quot;csat_responses&quot;: 14.0, &quot;contact_volume&quot;: 30.0, &quot;total_orders&quot;: 692.0, &quot;compensation_cost&quot;: 123.39, &quot;hypothesis&quot;: &quot;Compensation exposure increased. Check whether this is driven by higher contact volume, higher compensation per contact, policy change, or late delivery/cancellation mix.&quot;, &quot;why_this_matters&quot;: &quot;Delivery compensation cost can signal expensive service recovery caused by operational failures.&quot;, &quot;suggested_validation&quot;: &quot;Decompose cost into contact volume and compensation per contact; review delivery/cancellation policy usage and large goodwill outliers.&quot;, &quot;possible_owner&quot;: &quot;CS Policy / Finance&quot;, &quot;recommended_next_action&quot;: &quot;Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy.&quot;, &quot;decomposition_note&quot;: &quot;Volume effect: contacts +9; compensation/contact 4.1 vs 5.0 baseline.&quot;}]}</script>
 </body>
 </html>

@@ -45,6 +45,17 @@ METRIC_LABELS = {
     "contact_rate": "Contact rate",
 }
 
+METRIC_GROUPS = {
+    "contact_volume": "Demand",
+    "contact_rate": "Demand",
+    "avg_aht_minutes": "Efficiency",
+    "backlog_end_of_week": "Efficiency",
+    "fcr_rate": "Quality",
+    "avg_csat": "Quality",
+    "compensation_cost": "Cost / risk",
+    "cancellation_rate": "Cost / risk",
+}
+
 METRIC_DEFINITIONS = {
     "contact_volume": {
         "definition": "Number of contacts created in the week.",
@@ -415,8 +426,39 @@ def possible_owner(metric):
     return "CS Analytics"
 
 
-def validation_prompt(metric, confidence):
+def reason_family(row):
+    reason = (row.get("contact_reason_name") or "").lower()
+    if "late delivery" in reason or "delivery" in reason:
+        return "delivery"
+    if "cancel" in reason:
+        return "cancellation"
+    if "payment" in reason or "refund" in reason:
+        return "payment"
+    if "quality" in reason or "damaged" in reason:
+        return "quality"
+    if "account" in reason:
+        return "account"
+    return "general"
+
+
+def metric_group(metric):
+    return METRIC_GROUPS.get(metric, "Other")
+
+
+def validation_prompt(metric, confidence, row=None):
     prefix = "Low-confidence signal: validate sample size first. " if confidence == "low" else ""
+    row = row or {}
+    family = reason_family(row)
+    if metric == "fcr_rate" and family == "delivery":
+        return prefix + "Check delayed-order status, ETA accuracy, courier/warehouse incidents, repeat-contact samples, and whether customers needed follow-up after the first response."
+    if metric == "fcr_rate" and family == "cancellation":
+        return prefix + "Review cancellation flow ownership, refund routing, macro accuracy, reopened cases, and unresolved follow-up reasons."
+    if metric == "avg_aht_minutes" and family == "delivery":
+        return prefix + "Check whether agents are spending more time tracing delivery status, escalating to partners, or handling unclear ETA information."
+    if metric == "compensation_cost" and family in {"delivery", "cancellation"}:
+        return prefix + "Decompose cost into contact volume and compensation per contact; review delivery/cancellation policy usage and large goodwill outliers."
+    if metric == "avg_csat" and family == "delivery":
+        return prefix + "Validate survey count first, then sample late-delivery tickets for expectation setting, resolution completeness, and compensation handling."
     prompts = {
         "avg_aht_minutes": "Check contact complexity, new-agent share, backlog pressure, process/tool incidents, and contact mix.",
         "fcr_rate": "Review reopened cases, downstream unresolved issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix.",
@@ -431,13 +473,22 @@ def validation_prompt(metric, confidence):
 
 
 def why_this_matters(metric, row):
+    family = reason_family(row)
     if metric == "avg_aht_minutes":
+        if family == "delivery":
+            return "Delivery contacts with longer AHT can consume capacity quickly because agents often need partner checks and customer follow-up."
         return "Longer handling time can reduce capacity and increase backlog risk."
     if metric == "fcr_rate":
+        if family == "delivery":
+            return "A delivery-related FCR drop can create repeat contacts and weaken trust because the underlying order issue may still be unresolved."
+        if family == "cancellation":
+            return "A cancellation-related FCR drop can mean customers need repeated help to complete cancellation, refund, or policy steps."
         return "Lower first-contact resolution can create repeat contacts and weaker customer experience."
     if metric == "avg_csat":
         return "CSAT movement affects customer trust, but response count determines reliability."
     if metric == "compensation_cost":
+        if family == "delivery":
+            return "Delivery compensation cost can signal expensive service recovery caused by operational failures."
         return "Higher compensation cost can signal policy exposure or operational failures with direct financial impact."
     if metric == "contact_rate":
         return "A higher contact rate means support demand is rising relative to orders."
@@ -450,11 +501,29 @@ def why_this_matters(metric, row):
     return "Movement may affect weekly operating review priorities."
 
 
-def recommended_action(metric, severity_value, confidence, impact):
+def recommended_action(metric, severity_value, confidence, impact, row=None):
+    row = row or {}
+    family = reason_family(row)
     if confidence == "low":
-        return "Validate sample size before escalating."
+        return "Confirm sample size and source completeness before using this in the weekly business narrative."
+    if metric == "fcr_rate" and family == "delivery":
+        return "Ask CS Operations and Fulfillment Ops to review late-delivery repeat contacts and identify the top unresolved driver."
+    if metric == "fcr_rate" and family == "cancellation":
+        return "Ask CS Operations to sample reopened cancellation cases and separate policy confusion from process handoff issues."
+    if metric == "avg_aht_minutes":
+        return "Review ticket samples by reason and compare staffing, tool incidents, and escalation mix before proposing a process action."
+    if metric == "compensation_cost":
+        return "Split the increase into volume versus compensation-per-contact, then review high-cost policy or goodwill cases with Finance/Policy."
+    if metric == "contact_rate":
+        return "Validate order denominator and identify which contact reasons are creating demand above order growth."
+    if metric == "contact_volume":
+        return "Check whether the volume lift is demand growth, a reason-mix shift, or a specific upstream operational issue."
+    if metric == "cancellation_rate":
+        return "Validate the country-week order grain and review fulfillment or policy changes before escalation."
+    if metric == "avg_csat":
+        return "Check response count and sample recent low-score contacts before linking the movement to service quality."
     if impact == "high" and severity_value in {"high", "medium"}:
-        return "Assign owner and review source records this week."
+        return "Assign an accountable owner for validation and bring a short finding to the next weekly review."
     if metric in {"cancellation_rate", "contact_rate"}:
         return "Validate denominator and grain before business narrative."
     return "Monitor and compare with adjacent weeks."
@@ -557,6 +626,7 @@ def build_diagnostics(rows, latest_week, baseline_weeks):
                 "contact_reason_id": current_row["contact_reason_id"],
                 "metric": metric,
                 "metric_label": METRIC_LABELS[metric],
+                "metric_group": metric_group(metric),
                 "current_value": current,
                 "baseline_value": baseline,
                 "abs_change": abs_change,
@@ -577,10 +647,10 @@ def build_diagnostics(rows, latest_week, baseline_weeks):
             diag_context.update(diag)
             diag["hypothesis"] = hypothesis_for(diag_context, {})
             diag["why_this_matters"] = why_this_matters(metric, diag_context)
-            diag["suggested_validation"] = validation_prompt(metric, confidence)
+            diag["suggested_validation"] = validation_prompt(metric, confidence, diag_context)
             diag["possible_owner"] = possible_owner(metric)
             diag["recommended_next_action"] = recommended_action(
-                metric, movement_severity, confidence, business_impact
+                metric, movement_severity, confidence, business_impact, diag_context
             )
             diag["decomposition_note"] = decomposition_note(
                 metric, current_row, baseline_rows, current, baseline, abs_change
@@ -701,6 +771,91 @@ def svg_bar_chart(rows, width=760, height=320):
     return "\n".join(parts)
 
 
+def diagnostic_key(item):
+    return (
+        item["country_code"],
+        item["contact_reason_id"],
+        item["metric"],
+        round(item["current_value"] or 0, 6),
+        round(item["baseline_value"] or 0, 6),
+    )
+
+
+def balanced_signals(diagnostics, limit=10):
+    if not diagnostics:
+        return []
+    candidates = [d for d in diagnostics if d["direction"] == "worse"] or list(diagnostics)
+    selected = []
+    seen = set()
+    group_counts = defaultdict(int)
+    metric_counts = defaultdict(int)
+
+    def add(item, group_cap=None, metric_cap=None):
+        key = diagnostic_key(item)
+        group = metric_group(item["metric"])
+        metric = item["metric"]
+        if key in seen:
+            return False
+        if group_cap is not None and group_counts[group] >= group_cap:
+            return False
+        if metric_cap is not None and metric_counts[metric] >= metric_cap:
+            return False
+        selected.append(item)
+        seen.add(key)
+        group_counts[group] += 1
+        metric_counts[metric] += 1
+        return True
+
+    for group_cap, metric_cap in [(1, 1), (2, 1), (2, 2), (3, 2)]:
+        for item in candidates:
+            if len(selected) >= limit:
+                return selected
+            add(item, group_cap, metric_cap)
+
+    for item in candidates:
+        if len(selected) >= limit:
+            break
+        add(item)
+    return selected
+
+
+def build_pattern_insights(diagnostics, limit=4):
+    grouped = defaultdict(list)
+    for item in diagnostics:
+        if item["direction"] != "worse":
+            continue
+        if item["business_impact"] not in {"high", "medium"}:
+            continue
+        key = (item["contact_reason_name"], item["metric"], item["direction"])
+        grouped[key].append(item)
+
+    patterns = []
+    for (reason, metric, _), items in grouped.items():
+        countries = sorted({item["country_code"] for item in items})
+        if len(countries) < 2:
+            continue
+        impact_score = sum(item["impact_score"] for item in items)
+        avg_change = mean(item["abs_change"] for item in items)
+        patterns.append(
+            {
+                "contact_reason_name": reason,
+                "metric": metric,
+                "metric_label": METRIC_LABELS[metric],
+                "metric_group": metric_group(metric),
+                "country_count": len(countries),
+                "countries": countries[:5],
+                "impact_score": impact_score,
+                "avg_change": avg_change,
+                "summary": (
+                    f"{reason} {METRIC_LABELS[metric]} deteriorated across {len(countries)} countries."
+                ),
+                "recommended_review": validation_prompt(metric, "high", items[0]),
+            }
+        )
+    patterns.sort(key=lambda p: (-p["country_count"], -p["impact_score"]))
+    return patterns[:limit]
+
+
 def build_summary(rows, diagnostics, latest_week, baseline_weeks):
     weekly = [aggregate_week(rows, week) for week in sorted({r["week_start"] for r in rows})]
     latest = aggregate_week(rows, latest_week)
@@ -734,11 +889,16 @@ def build_summary(rows, diagnostics, latest_week, baseline_weeks):
     worse_signals = [d for d in diagnostics if d["direction"] == "worse"]
     low_confidence = [d for d in diagnostics if d["confidence"] == "low"]
     matters_most = next((d for d in diagnostics if d["direction"] == "worse"), diagnostics[0] if diagnostics else None)
-    investigate_first = [
-        d
-        for d in diagnostics
-        if d["direction"] == "worse" and d["business_impact"] in {"high", "medium"}
-    ][:6]
+    top_signals = balanced_signals(diagnostics, 10)
+    investigate_first = balanced_signals(
+        [
+            d
+            for d in diagnostics
+            if d["direction"] == "worse" and d["business_impact"] in {"high", "medium"}
+        ],
+        6,
+    )
+    pattern_insights = build_pattern_insights(diagnostics)
     what_changed = [
         f"{item['metric_label']} is {item['formatted_change']} vs baseline"
         for item in headline_changes
@@ -758,8 +918,9 @@ def build_summary(rows, diagnostics, latest_week, baseline_weeks):
             aggregate_reason(rows, latest_week), key=lambda r: r["contact_volume"], reverse=True
         ),
         "headline_changes": headline_changes,
-        "top_signals": diagnostics[:10],
+        "top_signals": top_signals,
         "investigate_first": investigate_first,
+        "pattern_insights": pattern_insights,
         "low_confidence_signals": low_confidence[:6],
         "high_signal_count": len(high_signals),
         "worse_signal_count": len(worse_signals),
@@ -1072,6 +1233,41 @@ def write_dashboard(summary):
         f"<li>{escape(item)}</li>"
         for item in (summary["executive_summary"]["low_confidence"] or ["No low-confidence top signals in the current queue."])
     )
+    pattern_cards = []
+    for item in summary.get("pattern_insights", []):
+        countries = ", ".join(item["countries"])
+        pattern_cards.append(
+            f"""
+            <article class="insight-card">
+              <span>{escape(item['metric_group'])}</span>
+              <h3>{escape(item['summary'])}</h3>
+              <p>{escape(format_change(item['metric'], item['avg_change'], None))} average movement; countries: {escape(countries)}</p>
+              <small>{escape(item['recommended_review'])}</small>
+            </article>"""
+        )
+    if not pattern_cards:
+        pattern_cards.append(
+            """
+            <article class="insight-card">
+              <span>Pattern review</span>
+              <h3>No repeated cross-country pattern met the review threshold.</h3>
+              <p>Use the balanced signal ranking below for individual country and reason checks.</p>
+            </article>"""
+        )
+    ranked_rows = []
+    for rank, item in enumerate(summary["top_signals"][:10], start=1):
+        signal = f"{item['country_code']} / {item['contact_reason_name']}"
+        ranked_rows.append(
+            f"""
+            <tr>
+              <td><strong>{rank}</strong></td>
+              <td><strong>{escape(signal)}</strong><br><small>{escape(item['metric_label'])} · {escape(metric_group(item['metric']))}</small></td>
+              <td>{escape(format_change(item['metric'], item['abs_change'], item['pct_change']))}</td>
+              <td><span class="pill impact-{escape(item['business_impact'])}">{escape(item['business_impact'])}</span><br><small>score {item['impact_score']:.1f}</small></td>
+              <td><span class="pill confidence-{escape(item['confidence'])}">{escape(item['confidence'])}</span></td>
+              <td>{escape(item['recommended_next_action'])}</td>
+            </tr>"""
+        )
     signal_rows = []
     for item in summary["top_signals"][:12]:
         signal = f"{item['country_code']} / {item['contact_reason_name']} / {item['metric_label']}"
@@ -1169,6 +1365,12 @@ def write_dashboard(summary):
     .summary-card {{ border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--soft); }}
     .summary-card h2 {{ margin: 0 0 8px; font-size: 16px; }}
     .summary-card ul {{ margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.45; }}
+    .insight-grid {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }}
+    .insight-card {{ border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--soft); min-height: 142px; }}
+    .insight-card span {{ color: var(--gold); font-weight: 700; font-size: 12px; text-transform: uppercase; }}
+    .insight-card h3 {{ margin: 6px 0 8px; font-size: 16px; letter-spacing: 0; }}
+    .insight-card p {{ color: var(--muted); margin: 0 0 8px; line-height: 1.4; }}
+    .insight-card small {{ color: var(--muted); line-height: 1.35; display: block; }}
     .panel-heading {{ margin-bottom: 12px; }}
     .panel-heading span {{ color: var(--gold); font-weight: 700; font-size: 12px; text-transform: uppercase; }}
     .panel-heading h2 {{ margin: 3px 0 0; font-size: 18px; letter-spacing: 0; }}
@@ -1185,7 +1387,7 @@ def write_dashboard(summary):
     .pill.confidence-low, .pill.impact-low {{ color: #991b1b; border-color: #fecaca; background: #fff1f2; }}
     .note {{ color: var(--muted); line-height: 1.55; }}
     @media (max-width: 900px) {{
-      .kpi-grid, .grid, .summary-grid {{ grid-template-columns: 1fr; }}
+      .kpi-grid, .grid, .summary-grid, .insight-grid {{ grid-template-columns: 1fr; }}
       table {{ font-size: 13px; }}
     }}
   </style>
@@ -1216,10 +1418,16 @@ def write_dashboard(summary):
       {''.join(trend_sections)}
       <section class="panel wide">
         <div class="panel-heading">
-          <span>Exception review</span>
-          <h2>Top country and contact-reason signals</h2>
+          <span>Pattern review</span>
+          <h2>Repeated patterns and balanced KPI signals</h2>
         </div>
-        {svg_bar_chart(summary['top_signals'])}
+        <div class="insight-grid">{''.join(pattern_cards)}</div>
+        <table>
+          <thead>
+            <tr><th>Rank</th><th>Balanced signal</th><th>Latest vs baseline</th><th>Business impact</th><th>Confidence</th><th>Recommended next action</th></tr>
+          </thead>
+          <tbody>{''.join(ranked_rows)}</tbody>
+        </table>
       </section>
       <section class="panel wide">
         <div class="panel-heading">
@@ -1642,6 +1850,7 @@ def main():
             "contact_reason_id",
             "metric",
             "metric_label",
+            "metric_group",
             "current_value",
             "baseline_value",
             "abs_change",

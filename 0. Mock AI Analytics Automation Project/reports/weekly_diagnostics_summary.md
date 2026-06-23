@@ -1,6 +1,6 @@
 # Weekly KPI Diagnostics Summary
 
-Generated at: `2026-06-23T20:23:30`
+Generated at: `2026-06-24T01:56:27`
 
 ## Diagnostic Frame
 
@@ -28,13 +28,13 @@ Generated at: `2026-06-23T20:23:30`
 | Segment | Metric | Latest vs baseline | Severity | Confidence | Business impact | Analyst hypothesis |
 | --- | --- | ---: | --- | --- | --- | --- |
 | Germany / Late delivery | FCR | 84.6% vs 89.3%; -4.7 pp | high | high | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
-| Netherlands / Late delivery | FCR | 82.1% vs 93.8%; -11.6 pp | high | high | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
-| Poland / Late delivery | FCR | 72.7% vs 84.0%; -11.3 pp | high | high | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
-| Austria / Late delivery | FCR | 84.6% vs 91.4%; -6.8 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
-| Germany / Cancellation | FCR | 88.9% vs 95.5%; -6.6 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
-| Germany / Missing item | FCR | 88.2% vs 96.2%; -8.0 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
-| Germany / Payment issue | FCR | 85.7% vs 96.4%; -10.7 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
-| United Kingdom / Cancellation | FCR | 85.7% vs 100.0%; -14.3 pp | high | medium | high | FCR decreased. Validate unresolved downstream issues, policy/process ambiguity, agent knowledge gaps, and complex contact mix. |
+| Germany / Late delivery | Compensation cost | EUR 216 vs EUR 197; +20 (+10%) | medium | high | medium | Compensation exposure increased. Check whether this is driven by higher contact volume, higher compensation per contact, policy change, or late delivery/cancellation mix. |
+| Netherlands / Late delivery | Contact rate | 4.3% vs 3.4%; +1.0 pp | monitor | high | medium | Possible delivery reliability pressure. Validate late-order rate, courier incidents, and warehouse capacity. |
+| Netherlands / Late delivery | AHT | 7.8 min vs 7.4 min; +0.38 | monitor | high | low | AHT increased. Validate contact complexity, new-agent share, backlog pressure, process/tool issues, and contact mix. |
+| Netherlands / Account issue | Cancellation rate | 5.5% vs 4.0%; +1.4 pp | monitor | high | low | Cancellation rate increased in Netherlands. Validate fulfillment, partner, delivery, and policy/process changes at country-week grain. |
+| Netherlands / Cancellation | Backlog | 8 vs 2; +6 (+256%) | high | medium | low | Backlog pressure increased. Validate staffing coverage, unresolved queue age, and whether AHT or volume also rose. |
+| Germany / Cancellation | CSAT | 3.92 vs 4.24; -0.32 | medium | medium | low | CSAT decreased. Validate survey count, service quality themes, and specific reason/country friction. |
+| Germany / Cancellation | Contact rate | 1.9% vs 1.8%; +0.1 pp | monitor | high | low | Possible cancellation intent increase. Validate cancellation policy, supply issues, and order mix. |
 
 ## Quality And Interpretation Notes
 

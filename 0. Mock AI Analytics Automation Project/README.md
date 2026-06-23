@@ -49,21 +49,30 @@ flowchart LR
 
 ## Project Layers
 
-| Layer | What it does | Key artifact |
-| --- | --- | --- |
-| Raw synthetic data | Creates mock customer support data for a safe portfolio project | [`data/raw/`](data/raw/) |
-| Staging | Cleans and standardizes the source data | [`models/staging/`](models/staging/) |
-| Intermediate models | Adds business logic for orders, contacts, CSAT, compensation, and staffing | [`models/intermediate/`](models/intermediate/) |
-| KPI mart | Creates the weekly KPI table used as the single source for reporting and diagnostics | [`data/marts/mart_weekly_cs_kpi_by_country_reason.csv`](data/marts/mart_weekly_cs_kpi_by_country_reason.csv) |
-| Semantic layer | Defines each KPI, its grain, owner, caveats, and AI-safe usage rules | [`models/semantic/semantic_cs_kpi_metrics.yml`](models/semantic/semantic_cs_kpi_metrics.yml) |
-| AI-ready quality checks | Checks whether the KPI layer is reliable and safe for AI-assisted analysis | [`docs/data_quality_results.md`](docs/data_quality_results.md) |
-| Orchestration | Shows how the workflow runs from data generation to dashboard output | [`orchestration/airflow_dag.py`](orchestration/airflow_dag.py) / [`scripts/`](scripts/) |
-| AI data governance | Shows KPI definitions, lineage, quality checks, caveats, and single source of truth | [`dashboard/kpi_governance.html`](dashboard/kpi_governance.html) |
-| Business reporting & analyst diagnostics | Shows weekly KPI reporting and diagnostic signals for analysts to validate and escalate | [`dashboard/kpi_reporting.html`](dashboard/kpi_reporting.html) · [`dashboard/index.html`](dashboard/index.html) |
+The project is organized as a business-facing analytics stack: a trusted data foundation, a governed KPI layer, repeatable automation, and consumption views for reporting, diagnostics, and metric trust.
+
+| Category | Layer | What it does | Key artifact |
+| --- | --- | --- | --- |
+| Data foundation | Raw synthetic data | Creates safe mock customer support data for the portfolio case | [`data/raw/`](data/raw/) |
+| Data foundation | Staging | Cleans and standardizes source data before business logic is applied | [`models/staging/`](models/staging/) |
+| Data foundation | Intermediate models | Adds support operations logic for orders, contacts, CSAT, compensation, and staffing | [`models/intermediate/`](models/intermediate/) |
+| Governance & trust | Governed KPI mart | Creates the weekly KPI table used as the single source for reporting and diagnostics | [`data/marts/mart_weekly_cs_kpi_by_country_reason.csv`](data/marts/mart_weekly_cs_kpi_by_country_reason.csv) |
+| Governance & trust | Semantic KPI layer | Defines each KPI, grain, owner, caveats, and AI-safe usage rules | [`models/semantic/semantic_cs_kpi_metrics.yml`](models/semantic/semantic_cs_kpi_metrics.yml) |
+| Governance & trust | AI-ready quality checks | Tests whether the KPI layer is reliable enough for reporting and AI-assisted analysis | [`docs/data_quality_results.md`](docs/data_quality_results.md) |
+| Automation | Orchestration | Shows the repeatable workflow from synthetic data generation to dashboard output | [`orchestration/airflow_dag.py`](orchestration/airflow_dag.py) / [`scripts/`](scripts/) |
+| Data consumption | Weekly KPI Performance Overview | Summarizes weekly KPI health, period-over-period movement, and country/reason performance | [Open dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/kpi_reporting.html) |
+| Data consumption | Weekly Diagnostics Dashboard | Prioritizes metric movements for analyst validation, owner review, and escalation | [Open dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/) |
+| Data consumption | KPI Governance Page | Documents KPI definitions, lineage, quality checks, caveats, and single source of truth | [Open dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/kpi_governance.html) |
 
 ## Portfolio Value
 
 This project demonstrates the ability to turn fragmented operational data into a governed, repeatable analytics workflow. It shows how raw data can be transformed into reliable KPI layers, validated for AI-assisted use, and published into business reporting, analyst diagnostics, and KPI governance views.
+
+## Potential Enterprise Extensions
+
+This portfolio version uses static dashboards so the work is easy to review publicly. In an enterprise environment, the same governed KPI layer could support managed BI dashboards in Tableau, Looker, or Looker Studio, with role-based access, scheduled refresh, and stakeholder subscriptions.
+
+The semantic KPI layer and quality checks also create a foundation for AI-assisted stakeholder updates, such as weekly business review drafts, anomaly explanations, and metric Q&A that reference trusted definitions instead of ad hoc calculations.
 
 ## Reproduce Locally
 
