@@ -20,7 +20,7 @@ This project shows how an AI-ready analytics workflow can reduce that friction: 
 | Weekly Diagnostics Dashboard | Analyst-focused movement detection, validation queue, and escalation view | [Open dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/) |
 | KPI Governance Page | KPI definitions, lineage, quality checks, caveats, and AI-safe single source of truth | [Open dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/kpi_governance.html) |
 
-## Orchestration And Dependencies
+## Orchestration & Dependencies
 
 ```mermaid
 flowchart LR
