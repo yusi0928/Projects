@@ -4,13 +4,24 @@ This is a self-initiated synthetic/mock portfolio project that demonstrates end-
 
 No real customer, employee, financial, employer, or proprietary company data is used.
 
-## Business Context
+## 30-Second Summary
 
-Customer Support leadership needs a reliable weekly business review across countries and contact reasons. The key KPIs are contact volume, contact rate, AHT, FCR, CSAT, backlog, compensation cost, and cancellation rate.
+Customer Support leadership needs a reliable weekly business review across countries and contact reasons. Key KPIs include contact volume, contact rate, AHT, FCR, CSAT, backlog, compensation cost, and cancellation rate.
 
-In many operations teams, weekly reporting is slow, manual, and fragmented. Analysts spend too much time preparing data, checking definitions, and explaining metric differences before the business can even start discussing performance. KPI definitions may also become inconsistent across reports, which makes decision-making less reliable.
+In many operations teams, this reporting process is still slow, manual, and fragmented. Analysts spend too much time preparing data, reconciling KPI definitions, checking data quality, and explaining metric differences before business teams can focus on performance and decisions.
 
-This project shows how an AI-ready analytics workflow can reduce that friction: one governed semantic KPI layer supports automated business reporting, analyst diagnostics, KPI governance documentation, and future BI implementation.
+This project uses synthetic Customer Support data as an example to show how an analytics workflow can be automated and governed end to end:
+
+- generate safe synthetic operational data
+- transform raw data into clean analytical layers
+- build a governed weekly KPI mart
+- define KPI logic through a semantic metric layer
+- run data quality checks before metrics are used
+- publish BI-style dashboards for weekly performance review
+- surface diagnostic insights for anomaly review and escalation
+- create an AI-ready foundation for business summaries and stakeholder updates
+
+The goal is not just to build dashboards. The goal is to show how one governed semantic KPI layer can support automated reporting, analyst diagnostics, KPI trust documentation, and future AI-assisted insight workflows.
 
 ## Live Dashboards
 
@@ -64,15 +75,24 @@ The project is organized as a business-facing analytics stack: a trusted data fo
 | Data consumption | Weekly Diagnostics Dashboard | Prioritizes metric movements for analyst validation, owner review, and escalation | [Open dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/) |
 | Data consumption | KPI Governance Page | Documents KPI definitions, lineage, quality checks, caveats, and single source of truth | [Open dashboard](https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/kpi_governance.html) |
 
-## Portfolio Value
-
-This project demonstrates the ability to turn fragmented operational data into a governed, repeatable analytics workflow. It shows how raw data can be transformed into reliable KPI layers, validated for AI-assisted use, and published into business reporting, analyst diagnostics, and KPI governance views.
-
 ## Potential Enterprise Extensions
 
-This portfolio version uses static dashboards so the work is easy to review publicly. In an enterprise environment, the same governed KPI layer could support managed BI dashboards in Tableau, Looker, or Looker Studio, with role-based access, scheduled refresh, and stakeholder subscriptions.
+This portfolio version uses static HTML dashboards so the work is easy to review publicly. In an enterprise environment, the same governed KPI layer could support:
 
-The semantic KPI layer and quality checks also create a foundation for AI-assisted stakeholder updates, such as weekly business review drafts, anomaly explanations, and metric Q&A that reference trusted definitions instead of ad hoc calculations.
+- managed BI dashboards in Tableau, Looker, or Looker Studio
+- scheduled refresh, stakeholder subscriptions, and KPI movement alerts
+- role-based access by country, function, or leadership level
+- weekly business reviews, country check-ins, and contact reason deep dives
+
+The same foundation could also support AI-assisted analytics, with a clear separation between automation and human accountability:
+
+| Step | Responsibility |
+| --- | --- |
+| AI-assisted drafting | Generate first-pass weekly summaries, anomaly explanations, metric Q&A, and stakeholder update drafts based on trusted KPI definitions and validated outputs |
+| Analyst validation | Review data quality, confirm metric movements, add business context, and check whether AI-generated explanations are supported by evidence |
+| Human publication | Finalise stakeholder communication, business recommendations, and escalation messages before they are shared with decision-makers |
+
+This keeps AI useful but controlled: AI accelerates reporting and diagnostics, while analysts remain accountable for validation, context, and final business communication.
 
 ## Reproduce Locally
 
