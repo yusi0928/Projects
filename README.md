@@ -2,11 +2,11 @@
 
 #### Here are selected analytics portfolio projects, including a mock business case with synthetic data and earlier coding/presentation projects.
 
-##### 0. [Mock AI Analytics Automation Project: Synthetic CS Operations Pipeline](./0.%20Mock%20AI%20Analytics%20Automation%20Project/) (Python, SQL, SQLite, HTML)
+##### 0. [Mock AI Analytics Automation Project: Synthetic CS Operations Pipeline](./ai-assisted-analytics-automation/) (Python, SQL, SQLite, HTML)
 ###### - Self-initiated mock portfolio project using fully synthetic data; not based on any former employer's proprietary data, systems, dashboards, or customer information.
 ###### - Built an end-to-end analytics automation workflow from synthetic raw data generation to SQL transformation layers, governed weekly KPI mart, semantic metric definitions, data quality checks, orchestration design, weekly diagnostics, and reproducible HTML dashboard.
 ###### - Demonstrates analytics engineering, KPI governance, data automation, and AI-ready reporting foundations.
-###### - Live dashboard: https://yusi0928.github.io/Projects/0.%20Mock%20AI%20Analytics%20Automation%20Project/dashboard/
+###### - Live dashboard: https://yusi0928.github.io/Projects/ai-assisted-analytics-automation/dashboard/
 
 ##### 1.Quantifying customer feedback, a case of hotel industry (Python)
 ###### - NLTK sentiment analysis
