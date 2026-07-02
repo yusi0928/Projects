@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python Analytics & Machine Learning Projects</title>
+  <style>
+:root {
+  color-scheme: light;
+  --bg: #f7f8fb;
+  --surface: #ffffff;
+  --text: #172033;
+  --muted: #5f6b7a;
+  --line: #dce2ea;
+  --accent: #1f6feb;
+  --accent-dark: #174ea6;
+  --shadow: 0 14px 35px rgba(23, 32, 51, 0.08);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+main { width: min(1080px, calc(100% - 32px)); margin: 0 auto; padding: 56px 0; }
+.hero { margin-bottom: 34px; }
+.eyebrow { margin: 0 0 10px; color: var(--accent); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.08; letter-spacing: 0; }
+.lede { max-width: 780px; margin: 18px 0 0; color: var(--muted); font-size: 1.08rem; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+.grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 22px; box-shadow: var(--shadow); display: flex; flex-direction: column; min-height: 100%; }
+.card h2, .card h3 { margin: 0 0 10px; line-height: 1.25; letter-spacing: 0; }
+.card p { margin: 0 0 18px; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
+a.button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 10px 14px; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 700; text-decoration: none; }
+a.button:hover { background: var(--accent-dark); }
+a.button.secondary { background: #eef4ff; color: var(--accent-dark); }
+a.button.secondary:hover { background: #dfeaff; }
+.section { margin-top: 36px; }
+.section h2 { margin: 0 0 14px; font-size: 1.45rem; letter-spacing: 0; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; min-width: 720px; }
+th, td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: #334155; background: #f0f3f8; font-size: 0.9rem; }
+tr:last-child td { border-bottom: 0; }
+.note { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; color: var(--muted); }
+footer { margin-top: 42px; color: var(--muted); font-size: 0.92rem; }
+@media (max-width: 820px) { .grid, .grid.two { grid-template-columns: 1fr; } main { padding: 36px 0; } }
+</style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Python portfolio</p>
+      <h1>Python Analytics & Machine Learning Projects</h1>
+      <p class="lede">Selected Python analytics cases covering lead scoring, customer feedback analysis, machine learning, NLP, statistics, and business recommendations.</p>
+    </section>
+    <section class="grid">
+      <article class="card">
+        <h2>Amazon Reviewer Segmentation Analysis</h2>
+        <p>Unsupervised learning, reviewer segmentation, clustering, customer insight, and business interpretation.</p>
+        <div class="actions">
+          <a class="button" href="./01-amazon-reviewer-segmentation-analysis/amazon-reviewer-segmentation-analysis-coding.ipynb">Coding</a>
+          <a class="button secondary" href="./01-amazon-reviewer-segmentation-analysis/amazon-reviewer-segmentation-analysis-presentation.pdf">Presentation</a>
+        </div>
+      </article>
+      <article class="card">
+        <h2>Predictive Lead Scoring</h2>
+        <p>Supervised machine learning, lead scoring, conversion prediction, model evaluation, and marketing/sales recommendations.</p>
+        <div class="actions">
+          <a class="button" href="./02-predictive-lead-scoring/predictive-lead-scoring-coding.ipynb">Coding</a>
+          <a class="button secondary" href="./02-predictive-lead-scoring/predictive-lead-scoring-presentation.pdf">Presentation</a>
+        </div>
+      </article>
+      <article class="card">
+        <h2>Customer Feedback Analysis</h2>
+        <p>NLP, sentiment analysis, hypothesis testing, correlation analysis, and customer feedback interpretation.</p>
+        <div class="actions">
+          <a class="button" href="./03-customer-feedback-analysis/customer-feedback-analysis-coding.ipynb">Coding</a>
+          <a class="button secondary" href="./03-customer-feedback-analysis/customer-feedback-analysis-presentation.pdf">Presentation</a>
+        </div>
+      </article>
+    </section>
+    <section class="section">
+      <h2>Additional Technical Exercises</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Car Data Pipeline Example</h3>
+          <p>Data pipeline practice, data wrangling, and structured analysis. Coding file only.</p>
+          <div class="actions"><a class="button secondary" href="./additional-technical-exercises/car-data-pipeline-example/car-data-pipeline-example-coding.ipynb">Open file</a></div>
+        </article>
+        <article class="card">
+          <h3>Stock Data Pipeline Example</h3>
+          <p>Data pipeline practice, time-based/financial data handling, and structured analysis. Coding file only.</p>
+          <div class="actions"><a class="button secondary" href="./additional-technical-exercises/stock-data-pipeline-example/stock-data-pipeline-example-coding.ipynb">Open file</a></div>
+        </article>
+        <article class="card">
+          <h3>Spam Email Prediction in R</h3>
+          <p>Text classification, feature extraction, and applied NLP/message filtering. Coding file only.</p>
+          <div class="actions"><a class="button secondary" href="./additional-technical-exercises/spam-email-prediction-r/spam-email-prediction-r-coding.pdf">Open file</a></div>
+        </article>
+      </div>
+    </section>
+    <section class="section note">
+      <a href="./README.md">Read the section README</a> for notes on project positioning and technical skills covered.
+    </section>
+    <footer>Data & Analytics Portfolio</footer>
+  </main>
+</body>
+</html>
